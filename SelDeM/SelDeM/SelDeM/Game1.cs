@@ -18,11 +18,14 @@ namespace SelDeM
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        DialogBox d;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
         }
 
         /// <summary>
@@ -34,7 +37,6 @@ namespace SelDeM
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -46,7 +48,7 @@ namespace SelDeM
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            d = new DialogBox(spriteBatch, Content, graphics, "test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test");
             // TODO: use this.Content to load your game content here
         }
 
@@ -84,7 +86,9 @@ namespace SelDeM
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            d.Draw();
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
