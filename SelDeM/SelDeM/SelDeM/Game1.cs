@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.IO;
 
 namespace SelDeM
 {
@@ -18,6 +19,8 @@ namespace SelDeM
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        DialogueChoices test;
 
         public Game1()
         {
@@ -34,7 +37,7 @@ namespace SelDeM
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             base.Initialize();
         }
 
@@ -71,7 +74,7 @@ namespace SelDeM
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            test = new DialogueChoices(@"C:\Users\143209\Desktop\test.txt", gameTime, spriteBatch);
             base.Update(gameTime);
         }
 
@@ -84,7 +87,7 @@ namespace SelDeM
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            
             base.Draw(gameTime);
         }
     }
