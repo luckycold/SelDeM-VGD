@@ -16,8 +16,12 @@ namespace SelDeM
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        private const int spriteSize = 64;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Level start;
+        Player player;
+        KeyboardState oldkb;
 
         public Game1()
         {
@@ -34,7 +38,7 @@ namespace SelDeM
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            oldkb = Keyboard.GetState();
             base.Initialize();
         }
 
@@ -48,6 +52,8 @@ namespace SelDeM
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 1f);
+            start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize);
         }
 
         /// <summary>
@@ -70,8 +76,10 @@ namespace SelDeM
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            KeyboardState kb = Keyboard.GetState();
             // TODO: Add your update logic here
-
+            player.Update(kb, oldkb);
+            oldkb = kb;
             base.Update(gameTime);
         }
 
@@ -84,6 +92,10 @@ namespace SelDeM
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            start.Draw();
+            player.Draw();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
