@@ -24,8 +24,8 @@ namespace SelDeM
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 1600;
-            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
         }
 
         /// <summary>
@@ -37,6 +37,7 @@ namespace SelDeM
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            
             base.Initialize();
         }
 
@@ -48,7 +49,7 @@ namespace SelDeM
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            d = new DialogBox(spriteBatch, Content, graphics, "test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test");
+            d = new DialogBox(spriteBatch, Content, graphics, "Don't go for second best baby. Put your love to the test you know, you know you've got to. Make him express how he feels and maybe. Then you'll know your love is real. Don't go for second best baby. Put your love to the test you know, you know you've got to. Make him express how he feels and maybe. Then you'll know your love is real. Don't go for second best baby. Put your love to the test you know, you know you've got to. Make him express how he feels and maybe. Then you'll know your love is real.");
             // TODO: use this.Content to load your game content here
         }
 
@@ -69,7 +70,7 @@ namespace SelDeM
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
             // TODO: Add your update logic here
@@ -84,7 +85,7 @@ namespace SelDeM
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             d.Draw();

@@ -39,6 +39,7 @@ namespace SelDeM
             this.text = feedText(text);
         }
 
+        //method takes in a block of text as a string, and formats it to wrap around the text box.
         public string feedText(string t)
         {
             //wrap around text based on width of dialogbox
@@ -47,6 +48,33 @@ namespace SelDeM
             string[] words = t.Split(' ');
             foreach (string word in words)
             {
+                //checks to see if the next word can fit on the current line
+                ////if (sp1.MeasureString(word).Length() > (dialogBoxRect.Width - (int)(dialogBoxRect.Width * .06)))
+                ////{
+                ////    int index = 0;
+                ////    char[] letters = word.ToArray<char>();
+                ////    for (int i = letters.Length - 1; i > 0; i--)
+                ////    {
+                ////        string temp1 = "";
+                ////        for (int j = 0; j < i; j++)
+                ////        {
+                ////            temp1 = temp1 + letters[j];
+                ////        }
+                ////        if (sp1.MeasureString(temp1).Length() > (dialogBoxRect.Width - (int)(dialogBoxRect.Width * .06)))
+                ////        {
+                ////            index = i;
+                ////            break;
+                ////        }
+                ////    }
+                ////    string final = "";
+                ////    for (int i = 0; i < index; i++)
+                ////    {
+                ////        final = final + letters[i];
+                ////    }
+                ////    formattedText = formattedText + final + '\n';
+                ////    line = "-";
+                ////    word2 = word.Substring(index);
+                ////}
                 if (sp1.MeasureString(line+word).Length()>dialogBoxRect.Width-(int)(dialogBoxRect.Width*.06))
                 {
                     formattedText = formattedText + line + '\n';
@@ -84,7 +112,7 @@ namespace SelDeM
         public void Draw()
         {
             spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, Color.White);
-            spriteBatch.DrawString(sp1, text, new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.1)), Color.White);
+            spriteBatch.DrawString(sp1, text, new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
         }
     }
 }
