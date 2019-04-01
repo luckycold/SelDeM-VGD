@@ -15,11 +15,12 @@ namespace SelDeM
     {
         SpriteBatch sb;
         Texture2D tex;
-        Rectangle rec;
+        Rectangle rec, scrnB;
         int tileSize = 64;
         Tile[,] levelTiles;
+        Player player;
 
-        public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize)
+        public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player)
         {
             sb = spriteBatch;
             tex = texture;
@@ -30,10 +31,26 @@ namespace SelDeM
             {
                 for (int col = 0; col < levelTiles.GetLength(1); col++)
                 {
-                    levelTiles[row, col] = new Tile(new Rectangle(row * tileSize, col * tileSize, tileSize, tileSize));
+                    levelTiles[row, col] = new Tile(new Rectangle(row * tileSize, col * tileSize, tileSize, tileSize), tileSize);
                 }
             }
+            this.player = player;
+            scrnB = screenBounds;
+        }
 
+        public Tile[,] Tiles
+        {
+            get { return levelTiles; }
+            set { levelTiles = value; }
+        }
+
+        public void Update()
+        {
+            foreach(Tile tile in levelTiles)
+            {
+                if (tile.Rectangle.Intersects(scrnB))
+                    tile.checkFlag(player.Rectangle);
+            }
         }
 
         public void Draw()

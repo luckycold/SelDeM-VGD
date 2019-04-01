@@ -53,7 +53,7 @@ namespace SelDeM
 
             // TODO: use this.Content to load your game content here
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 1f);
-            start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize);
+            start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds);
         }
 
         /// <summary>

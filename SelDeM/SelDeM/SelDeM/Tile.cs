@@ -17,17 +17,35 @@ namespace SelDeM
         Rectangle rect;
         enum TileFlags { plain, unwalkable }
         TileFlags flag;
-        int playerForcefieldOffset = 64;
+        int ForcefieldOffset = 64;
 
         public Tile(Rectangle r, String tileType)
         {
             rect = r;
             setTile(tileType);
+            if (r.Width == r.Height)
+                ForcefieldOffset = r.Width;
+            if (r.Width > r.Height)
+                ForcefieldOffset = r.Width;
+            if (r.Width < r.Height)
+                ForcefieldOffset = r.Height;
         }
         public Tile(Rectangle r)
         {
             rect = r;
             flag = TileFlags.plain;
+            if (r.Width == r.Height)
+                ForcefieldOffset = r.Width;
+            if (r.Width > r.Height)
+                ForcefieldOffset = r.Width;
+            if (r.Width < r.Height)
+                ForcefieldOffset = r.Height;
+        }
+
+        public int TileForcefield
+        {
+            get { return ForcefieldOffset; }
+            set { ForcefieldOffset = value; }
         }
 
         public Rectangle Rectangle
@@ -57,19 +75,19 @@ namespace SelDeM
                             //Moves inserted rectangle away from tile depending on closest side
                             if (rec.X + rec.Width <= rect.X + rect.Width / 2)
                             {
-                                rec.X -= playerForcefieldOffset;
+                                rec.X -= ForcefieldOffset;
                             }
                             else if(rec.X + rec.Width > rect.X + rect.Width / 2)
                             {
-                                rec.X += playerForcefieldOffset;
+                                rec.X += ForcefieldOffset;
                             }
                             if(rec.Y + rec.Height <= rect.Y + rect.Height / 2)
                             {
-                                rec.Y -= playerForcefieldOffset;
+                                rec.Y -= ForcefieldOffset;
                             }
                             else if(rec.Y + rec.Height > rect.Y + rect.Height / 2)
                             {
-                                rec.Y += playerForcefieldOffset;
+                                rec.Y += ForcefieldOffset;
                             }
                             return true;
                         }
