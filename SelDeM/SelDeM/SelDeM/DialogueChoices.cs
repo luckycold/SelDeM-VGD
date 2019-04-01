@@ -12,7 +12,7 @@ using System.IO;
 
 namespace SelDeM
 {
-    class DialogueChoices : Game1
+    class DialogueChoices
     {
         String[] confirm;
         bool choice;
@@ -22,23 +22,25 @@ namespace SelDeM
         Rectangle[] arrowRect;
         Texture2D arrowTexture;
         SpriteBatch spriteBatch;
-        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, ???,String path, GameTime gT)
+        Vector2 vector0, vector1;
+        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager,String path)
         {
             oldKB = Keyboard.GetState();
+
             confirm = new String[2];
             readChoices(path);
             choice = true; //Choice1 is true, Choice2 is false
-            Input(gT);
 
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = Content.Load<SpriteFont>("DialogChoiceFont");
+            this.spriteBatch = spriteBatch;
+            arrowTexture = contentManager.Load<Texture2D>("Choice Arrow");
 
-            arrowRect = new Rectangle[2];
-            arrowRect[0] = new Rectangle(0, 0, 9, 9);
-            arrowRect[1] = new Rectangle(9, 0, 9, 9);
-            arrowTexture = Content.Load<Texture2D>("Choice Arrow");
-
-            Draww(gT);
+            vector0 = new Vector2(50, 50);
+            vector1 = new Vector2(50, 80);
+            arrowRect = new Rectangle[3];
+            arrowRect[0] = new Rectangle(0, 0, 6, 9);
+            arrowRect[1] = new Rectangle(6, 0, 6, 9);
+            arrowRect[2] = new Rectangle((int)vector1.X, (int)vector1.Y, arrowRect[0].Width * 3, arrowRect[0].Height * 3);
+            font = contentManager.Load<SpriteFont>("DialogChoiceFont");
         }
 
         private void readChoices(String path)
@@ -48,21 +50,37 @@ namespace SelDeM
             confirm[1] = reader.ReadLine();
         }
 
-        private void Input(GameTime gameTime)
+        public void Input(GameTime gameTime)
         {
             KeyboardState kb = Keyboard.GetState();
-            if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up) || kb.IsKeyDown(Keys.Down) && kb.IsKeyDown(Keys.Down))
-                choice = !choice;
+            if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up))
+            {
+                choice = true;
+                vector0 = new Vector2(50, 50);
+            }
+                
+            if (kb.IsKeyDown(Keys.Down) && kb.IsKeyDown(Keys.Down))
+            {
+                choice = false;
+                vector1 = new Vector2(80, 80);
+            }
+                
+            
+            kb = oldKB;
         }
 
-        private void Draww(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(arrowTexture, arrowRect[0], Color.White);
-            spriteBatch.DrawString(font, confirm[0], new Vector2(50, 50), Color.White);
-            spriteBatch.DrawString(font, confirm[1], new Vector2(80, 80), Color.White);
+            //if(choice == true)
+
+            if (gameTime.TotalGameTime.Seconds % 2 == 0)
+                spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White);
+            else
+                spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[1], Color.White);
+            spriteBatch.DrawString(font, confirm[0], vector0, Color.White);
+            spriteBatch.DrawString(font, confirm[1], vector1, Color.White);
             spriteBatch.End();
-            base.Draw(gameTime);
         }
     }
 }

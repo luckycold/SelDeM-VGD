@@ -38,6 +38,7 @@ namespace SelDeM
         {
             // TODO: Add your initialization logic here
             
+
             base.Initialize();
         }
 
@@ -49,7 +50,7 @@ namespace SelDeM
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            test = new DialogueChoices(spriteBatch, Content, @"C:/Users/143209/Desktop\test.txt");
             // TODO: use this.Content to load your game content here
         }
 
@@ -70,11 +71,11 @@ namespace SelDeM
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState(PlayerIndex.One).IsKeyDown(Keys.Escape))
                 this.Exit();
 
             // TODO: Add your update logic here
-            test = new DialogueChoices(@"C:\Users\143209\Desktop\test.txt", gameTime, spriteBatch);
+            test.Input(gameTime);
             base.Update(gameTime);
         }
 
@@ -87,7 +88,7 @@ namespace SelDeM
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            
+            test.Draw(gameTime);
             base.Draw(gameTime);
         }
     }
