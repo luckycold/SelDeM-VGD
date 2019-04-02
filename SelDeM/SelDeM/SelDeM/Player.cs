@@ -75,26 +75,5 @@ namespace SelDeM
         {
             sb.Draw(tex, rect, Color.White);
         }
-
-        public void moveUp(float addedForce)
-        {
-            pos.Y -= speed + addedForce;
-        }
-
-        public void moveLeft(float addedForce)
-        {
-            pos.X -= speed + addedForce;
-        }
-
-        public void moveDown(float addedForce)
-        {
-            pos.Y += speed + addedForce;
-        }
-
-        public void moveRight(float addedForce)
-        {
-            pos.X += speed + addedForce;
-        }
-
     }
 }
