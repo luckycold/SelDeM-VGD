@@ -64,7 +64,7 @@ namespace SelDeM
         {
             foreach (Tile tile in levelTiles)
             {
-                //if (tile.Rectangle.Intersects(scrnB))
+                if (tile.Rectangle.Intersects(scrnB))
                     tile.checkFlagForPlayer(player);
             }
 

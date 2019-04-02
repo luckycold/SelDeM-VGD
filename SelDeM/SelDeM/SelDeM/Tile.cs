@@ -17,29 +17,17 @@ namespace SelDeM
         Rectangle rect;
         enum TileFlags { plain, unwalkable }
         TileFlags flag;
-        int ForcefieldOffset = 64;
+        int ForcefieldOffset = 0;
 
         public Tile(Rectangle r, String tileType)
         {
             rect = r;
             setTile(tileType);
-            if (r.Width == r.Height)
-                ForcefieldOffset = r.Width;
-            if (r.Width > r.Height)
-                ForcefieldOffset = r.Width;
-            if (r.Width < r.Height)
-                ForcefieldOffset = r.Height;
         }
         public Tile(Rectangle r)
         {
             rect = r;
             flag = TileFlags.plain;
-            if (r.Width == r.Height)
-                ForcefieldOffset = r.Width;
-            if (r.Width > r.Height)
-                ForcefieldOffset = r.Width;
-            if (r.Width < r.Height)
-                ForcefieldOffset = r.Height;
         }
 
         public int TileForcefield
@@ -90,7 +78,7 @@ namespace SelDeM
                             {
                                 direction.Y++;
                             }
-                            player.move(direction);
+                            player.move(direction, ForcefieldOffset);
                             return true;
                         }
                         return false;

@@ -21,8 +21,9 @@ namespace SelDeM
         SpriteBatch spriteBatch;
         Level start;
         Player player;
-        KeyboardState oldkb;
+        KeyboardState oldkb, kb;
         Camera cam;
+        MouseState oldms, ms;
 
         public Game1()
         {
@@ -40,8 +41,10 @@ namespace SelDeM
         {
             // TODO: Add your initialization logic here
             oldkb = Keyboard.GetState();
+            oldms = Mouse.GetState();
             cam = new Camera(GraphicsDevice);
             cam.Pos = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -80,9 +83,10 @@ namespace SelDeM
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            KeyboardState kb = Keyboard.GetState();
+            kb = Keyboard.GetState();
+            ms = Mouse.GetState();
             // TODO: Add your update logic here
-            player.Update(kb, oldkb);
+            player.Update(kb, oldkb, ms, oldms);
             start.Update();
             oldkb = kb;
             base.Update(gameTime);

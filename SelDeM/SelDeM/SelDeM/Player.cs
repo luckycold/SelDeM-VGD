@@ -41,7 +41,7 @@ namespace SelDeM
             set { speed = value; }
         }
 
-        public void Update(KeyboardState kb, KeyboardState oldkb)
+        public void Update(KeyboardState kb, KeyboardState oldkb, MouseState ms, MouseState oldms)
         {
             k = kb;
             o = oldkb;
