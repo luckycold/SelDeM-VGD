@@ -29,25 +29,37 @@ namespace SelDeM
             speed = playerSpeed;
         }
 
+        public Rectangle Rectangle
+        {
+            get { return rect; }
+            set { rect = value; }
+        }
+
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = value; }
+        }
+
         public void Update(KeyboardState kb, KeyboardState oldkb)
         {
             k = kb;
             o = oldkb;
             if (kb.IsKeyDown(Keys.W))
             {
-                pos.Y -= speed;
+                moveUp();
             }
             if (kb.IsKeyDown(Keys.A))
             {
-                pos.X -= speed;
+                moveLeft();
             }
             if (kb.IsKeyDown(Keys.S))
             {
-                pos.Y += speed;
+                moveDown();
             }
             if (kb.IsKeyDown(Keys.D))
             {
-                pos.X += speed;
+                moveRight();
             }
             rect.X = (int)pos.X;
             rect.Y = (int)pos.Y;
@@ -56,6 +68,26 @@ namespace SelDeM
         public void Draw()
         {
             sb.Draw(tex, rect, Color.White);
+        }
+
+        public void moveUp()
+        {
+            pos.Y -= speed;
+        }
+
+        public void moveLeft()
+        {
+            pos.X -= speed;
+        }
+
+        public void moveDown()
+        {
+            pos.Y += speed;
+        }
+
+        public void moveRight()
+        {
+            pos.X += speed;
         }
     }
 }

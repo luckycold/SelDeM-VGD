@@ -60,7 +60,7 @@ namespace SelDeM
             }
         }
 
-        public Boolean checkFlags(Rectangle rec)
+        public Boolean checkFlag(Rectangle rec)
         {
             switch (flag)
             {

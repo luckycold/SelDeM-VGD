@@ -22,6 +22,7 @@ namespace SelDeM
         Level start;
         Player player;
         KeyboardState oldkb;
+        Camera cam;
 
         public Game1()
         {
@@ -39,6 +40,8 @@ namespace SelDeM
         {
             // TODO: Add your initialization logic here
             oldkb = Keyboard.GetState();
+            cam = new Camera(GraphicsDevice);
+            cam.Pos = new Vector2(500.0f, 200.0f);
             base.Initialize();
         }
 
@@ -53,7 +56,7 @@ namespace SelDeM
 
             // TODO: use this.Content to load your game content here
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 1f);
-            start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds);
+            start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player);
         }
 
         /// <summary>
@@ -79,6 +82,8 @@ namespace SelDeM
             KeyboardState kb = Keyboard.GetState();
             // TODO: Add your update logic here
             player.Update(kb, oldkb);
+            start.Update();
+            cam.Pos = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             oldkb = kb;
             base.Update(gameTime);
         }
@@ -92,9 +97,15 @@ namespace SelDeM
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
-            start.Draw();
+            spriteBatch.Begin(SpriteSortMode.BackToFront,
+                        BlendState.AlphaBlend,
+                        null,
+                        null,
+                        null,
+                        null,
+                        cam.get_transformation(GraphicsDevice));
             player.Draw();
+            start.Draw();
             spriteBatch.End();
 
             base.Draw(gameTime);
