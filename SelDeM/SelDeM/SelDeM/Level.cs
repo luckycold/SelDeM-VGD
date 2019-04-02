@@ -59,13 +59,13 @@ namespace SelDeM
             }
 
             if (player.Rectangle.X < rec.X)
-                player.moveRight();
+                player.move(new Vector2(1, 0));
             if (player.Rectangle.X + player.Rectangle.Width > rec.Width)
-                player.moveLeft();
+                player.move(new Vector2(-1, 0));
             if (player.Rectangle.Y < rec.Y)
-                player.moveDown();
+                player.move(new Vector2(0, 1));
             if (player.Rectangle.Y + player.Rectangle.Height > rec.Height)
-                player.moveUp();
+                player.move(new Vector2(0, -1));
 
         }
 

@@ -45,24 +45,21 @@ namespace SelDeM
         {
             k = kb;
             o = oldkb;
-            if (kb.IsKeyDown(Keys.W))
-            {
-                moveUp();
-            }
-            if (kb.IsKeyDown(Keys.A))
-            {
-                moveLeft();
-            }
-            if (kb.IsKeyDown(Keys.S))
-            {
-                moveDown();
-            }
-            if (kb.IsKeyDown(Keys.D))
-            {
-                moveRight();
-            }
+            Vector2 direction = new Vector2(
+                //X-Movement
+                kb.IsKeyDown(Keys.A) ? -1 : (kb.IsKeyDown(Keys.D) ? 1 : 0)
+                ,
+                //Y-Movement
+                kb.IsKeyDown(Keys.W) ? -1 : (kb.IsKeyDown(Keys.S) ? 1 : 0));
+            Vector2.Normalize(direction);
+            move(direction);
             rect.X = (int)pos.X;
             rect.Y = (int)pos.Y;
+        }
+
+        public void move(Vector2 direction)
+        {
+            pos += direction * speed;
         }
 
         public void Draw()
@@ -70,24 +67,25 @@ namespace SelDeM
             sb.Draw(tex, rect, Color.White);
         }
 
-        public void moveUp()
+        public void moveUp(float addedForce)
         {
-            pos.Y -= speed;
+            pos.Y -= speed + addedForce;
         }
 
-        public void moveLeft()
+        public void moveLeft(float addedForce)
         {
-            pos.X -= speed;
+            pos.X -= speed + addedForce;
         }
 
-        public void moveDown()
+        public void moveDown(float addedForce)
         {
-            pos.Y += speed;
+            pos.Y += speed + addedForce;
         }
 
-        public void moveRight()
+        public void moveRight(float addedForce)
         {
-            pos.X += speed;
+            pos.X += speed + addedForce;
         }
+
     }
 }
