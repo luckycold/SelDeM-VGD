@@ -44,6 +44,16 @@ namespace SelDeM
             set { levelTiles = value; }
         }
 
+        public Boolean setTile(int row, int col, Tile tile)
+        {
+            if (row >= 0 && levelTiles.GetLength(0) > row && col >= 0 && levelTiles.GetLength(1) > col)
+            {
+                levelTiles[row, col] = tile;
+                return true;
+            }
+            return false;
+        }
+
         public Rectangle Rectangle
         {
             get { return rec; }
@@ -52,12 +62,18 @@ namespace SelDeM
 
         public void Update()
         {
-            foreach(Tile tile in levelTiles)
+            foreach (Tile tile in levelTiles)
             {
-                if (tile.Rectangle.Intersects(scrnB))
-                    tile.checkFlag(player.Rectangle);
+                //if (tile.Rectangle.Intersects(scrnB))
+                    tile.checkFlagForPlayer(player);
             }
 
+            playerBoundaryCheck();
+
+        }
+
+        private void playerBoundaryCheck()
+        {
             if (player.Rectangle.X < rec.X)
                 player.move(new Vector2(1, 0));
             if (player.Rectangle.X + player.Rectangle.Width > rec.Width)
@@ -66,7 +82,6 @@ namespace SelDeM
                 player.move(new Vector2(0, 1));
             if (player.Rectangle.Y + player.Rectangle.Height > rec.Height)
                 player.move(new Vector2(0, -1));
-
         }
 
         public void Draw()

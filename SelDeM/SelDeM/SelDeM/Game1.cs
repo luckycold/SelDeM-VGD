@@ -41,7 +41,7 @@ namespace SelDeM
             // TODO: Add your initialization logic here
             oldkb = Keyboard.GetState();
             cam = new Camera(GraphicsDevice);
-            cam.Pos = new Vector2(500.0f, 200.0f);
+            cam.Pos = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             base.Initialize();
         }
 
@@ -57,6 +57,7 @@ namespace SelDeM
             // TODO: use this.Content to load your game content here
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
             start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player);
+            start.setTile(3, 3, new Tile(new Rectangle(64*3, 64*3, 64, 64), "unwalkable"));
         }
 
         /// <summary>
@@ -83,7 +84,6 @@ namespace SelDeM
             // TODO: Add your update logic here
             player.Update(kb, oldkb);
             start.Update();
-            cam.Pos = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             oldkb = kb;
             base.Update(gameTime);
         }

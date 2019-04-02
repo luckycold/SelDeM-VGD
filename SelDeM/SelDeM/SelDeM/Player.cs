@@ -51,7 +51,6 @@ namespace SelDeM
                 ,
                 //Y-Movement
                 kb.IsKeyDown(Keys.W) ? -1 : (kb.IsKeyDown(Keys.S) ? 1 : 0));
-            Vector2.Normalize(direction);
             move(direction);
             rect.X = (int)pos.X;
             rect.Y = (int)pos.Y;
@@ -59,7 +58,17 @@ namespace SelDeM
 
         public void move(Vector2 direction)
         {
+            if(direction.X != 0 && direction.Y != 0)
+                direction.Normalize();
             pos += direction * speed;
+        }
+
+        public void move(Vector2 direction, float addedForce)
+        {
+            if (direction.X != 0 && direction.Y != 0)
+                direction.Normalize();
+            float addedSpeed = speed + addedForce;
+            pos += direction * addedSpeed;
         }
 
         public void Draw()

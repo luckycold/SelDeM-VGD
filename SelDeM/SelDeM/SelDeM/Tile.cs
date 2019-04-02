@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace SelDeM
 {
-    public class Tile
+    class Tile
     {
         Rectangle rect;
         enum TileFlags { plain, unwalkable }
@@ -60,41 +60,43 @@ namespace SelDeM
             }
         }
 
-        public Boolean checkFlag(Rectangle rec)
+        public Boolean checkFlagForPlayer(Player player)
         {
             switch (flag)
             {
                 case TileFlags.plain:
                     {
-                        return rect.Intersects(rec);
+                        return rect.Intersects(player.Rectangle);
                     }
                 case TileFlags.unwalkable:
                     {
-                        if (rect.Intersects(rec))
+                        if (rect.Intersects(player.Rectangle))
                         {
+                            Vector2 direction = new Vector2(0,0);
                             //Moves inserted rectangle away from tile depending on closest side
-                            if (rec.X + rec.Width <= rect.X + rect.Width / 2)
+                            if (player.Rectangle.X + player.Rectangle.Width <= rect.X + rect.Width / 2)
                             {
-                                rec.X -= ForcefieldOffset;
+                                direction.X--;
                             }
-                            else if(rec.X + rec.Width > rect.X + rect.Width / 2)
+                            else if(player.Rectangle.X> rect.X + rect.Width / 2)
                             {
-                                rec.X += ForcefieldOffset;
+                                direction.X++;
                             }
-                            if(rec.Y + rec.Height <= rect.Y + rect.Height / 2)
+                            else if(player.Rectangle.Y <= rect.Y + rect.Height / 2)
                             {
-                                rec.Y -= ForcefieldOffset;
+                                direction.Y--;
                             }
-                            else if(rec.Y + rec.Height > rect.Y + rect.Height / 2)
+                            else if(player.Rectangle.Y + player.Rectangle.Height > rect.Y + rect.Height / 2)
                             {
-                                rec.Y += ForcefieldOffset;
+                                direction.Y++;
                             }
+                            player.move(direction);
                             return true;
                         }
                         return false;
                     }
             }
-            return rect.Intersects(rec);
+            return rect.Intersects(player.Rectangle);
         }
 
         public void setTile(String tileType)
@@ -104,6 +106,11 @@ namespace SelDeM
                 case "plain":
                     {
                         flag = TileFlags.plain;
+                        break;
+                    }
+                case "unwalkable":
+                    {
+                        flag = TileFlags.unwalkable;
                         break;
                     }
                 default:
