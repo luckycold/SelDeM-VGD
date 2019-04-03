@@ -24,8 +24,8 @@ namespace SelDeM
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SelDeM
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            d = new DialogBox(spriteBatch, Content, graphics, "Don't go for second best baby. Put your love to the test you know, you know you've got to. Make him express how he feels and maybe. Then you'll know your love is real. Don't go for second best baby. Put your love to the test you know, you know you've got to. Make him express how he feels and maybe. Then you'll know your love is real. Don't go for second best baby. Put your love to the test you know, you know you've got to. Make him express how he feels and maybe. Then you'll know your love is real.");
+            d = new DialogBox(spriteBatch, Content, graphics, "fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds ");
             // TODO: use this.Content to load your game content here
         }
 
@@ -72,7 +72,7 @@ namespace SelDeM
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
-
+            d.update();
             // TODO: Add your update logic here
 
             base.Update(gameTime);
