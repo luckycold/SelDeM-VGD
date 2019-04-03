@@ -23,6 +23,7 @@ namespace SelDeM
         private string text;
         private string[] lines;
         private int numLines, index;
+        private string[] textChunks;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text)
         {
@@ -42,7 +43,34 @@ namespace SelDeM
             lines = this.text.Split('\n');
             //gets the amount of lines of text that can fit in the textbox
             numLines = (int)(dialogBoxRect.Height / sp1.LineSpacing) - 2;
+            //filling array with the chunks that will be displayed at a time
+            textChunks = formatIntoChunks();
             index = 0;
+        }
+
+        public string[] formatIntoChunks()
+        {
+            string[] arr;
+            //if (lines.Length % numLines == 0)
+                arr = new string[lines.Length / numLines];
+            //else
+            //    arr = new string[lines.Length / numLines + 1];
+            string chunk = "";
+            int ind = 0;
+            for (int i =0; i<lines.Length;i++)
+            {
+                if ((i+1)%numLines==0)
+                {
+                    arr[ind] = chunk;
+                    chunk = "";
+                    ind++;
+                }
+                else
+                {
+                    chunk = chunk +'\n'+ lines[i];
+                }
+            }
+            return arr;
         }
 
         //method takes in a block of text as a string, and formats it to wrap around the text box.
@@ -112,9 +140,9 @@ namespace SelDeM
         public void update()
         {
             kb = Keyboard.GetState();
-            if (kb.IsKeyDown(Keys.Up) && !oldkb.IsKeyDown(Keys.Up))
+            if (kb.IsKeyDown(Keys.Left) && !oldkb.IsKeyDown(Keys.Left))
                 lineUp();
-            if (kb.IsKeyDown(Keys.Down) && !oldkb.IsKeyDown(Keys.Down))
+            if (kb.IsKeyDown(Keys.Right) && !oldkb.IsKeyDown(Keys.Right))
                 lineDown();
             oldkb = kb;
         }
@@ -127,20 +155,14 @@ namespace SelDeM
 
         public void lineDown()
         {
-            if (index<lines.Length-1)
+            if (index<textChunks.Length-1)
                 index++;
         }
 
         public void Draw()
         {
             spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, Color.White);
-            string display = "";
-            for (int i = 0; i < numLines; i++)
-            {
-                if (index+i<lines.Length)
-                    display = display + lines[index + i] + '\n';
-            }
-            spriteBatch.DrawString(sp1, display, new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
+            spriteBatch.DrawString(sp1, textChunks[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
         }
     }
 }
