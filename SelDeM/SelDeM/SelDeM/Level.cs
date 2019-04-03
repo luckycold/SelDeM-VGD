@@ -16,6 +16,7 @@ namespace SelDeM
         SpriteBatch sb;
         Texture2D tex;
         Rectangle rec, scrnB;
+        public static Rectangle curRec;
         int tileSize = 64;
         Tile[,] levelTiles;
         Player player;
@@ -62,6 +63,7 @@ namespace SelDeM
 
         public void Update()
         {
+            curRec = rec;
             foreach (Tile tile in levelTiles)
             {
                 if (tile.Rectangle.Intersects(scrnB))

@@ -19,6 +19,7 @@ namespace SelDeM
         Vector2 pos;
         KeyboardState k, o;
         float speed;
+        Boolean canWalk = true;
 
         public Player(SpriteBatch spriteBatch, Texture2D texture, Rectangle rectangle, float playerSpeed)
         {
@@ -41,16 +42,36 @@ namespace SelDeM
             set { speed = value; }
         }
 
+        public KeyboardState PlayerKeyboard
+        {
+            get { return k; }
+        }
+
+        public Boolean CanWalk
+        {
+            get { return canWalk; }
+            set { canWalk = value; }
+        }
+
         public void Update(KeyboardState kb, KeyboardState oldkb, MouseState ms, MouseState oldms)
         {
             k = kb;
             o = oldkb;
+            if(ms.ScrollWheelValue > oldms.ScrollWheelValue)
+            {
+                Game1.camHand.ZoomIn(.25f);
+            }
+            if (ms.ScrollWheelValue < oldms.ScrollWheelValue)
+            {
+                Game1.camHand.ZoomOut(.25f);
+            }
             Vector2 direction = new Vector2(
                 //X-Movement
-                kb.IsKeyDown(Keys.A) ? -1 : (kb.IsKeyDown(Keys.D) ? 1 : 0)
+                kb.IsKeyDown(Keys.A) && canWalk ? -1 : (kb.IsKeyDown(Keys.D) && canWalk ? 1 : 0)
                 ,
                 //Y-Movement
-                kb.IsKeyDown(Keys.W) ? -1 : (kb.IsKeyDown(Keys.S) ? 1 : 0));
+                kb.IsKeyDown(Keys.W) && canWalk ? -1 : (kb.IsKeyDown(Keys.S) && canWalk ? 1 : 0));
+            canWalk = true;
             move(direction);
             rect.X = (int)pos.X;
             rect.Y = (int)pos.Y;

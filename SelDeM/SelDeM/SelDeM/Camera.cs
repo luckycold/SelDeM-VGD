@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace SelDeM
 {
-    class Camera
+    public class Camera
     {
         protected float zoom; // Camera Zoom
         public Matrix transform; // Matrix Transform
@@ -29,7 +29,7 @@ namespace SelDeM
         {
             zoom = 1.0f;
             rotation = 0.0f;
-            pos = new Vector2(gD.Viewport.Width/2, gD.Viewport.Height/2);
+            pos = new Vector2(0,0);
         }
 
         public float Zoom
@@ -62,7 +62,7 @@ namespace SelDeM
               Matrix.CreateTranslation(new Vector3(-pos.X, -pos.Y, 0)) *
                                          Matrix.CreateRotationZ(Rotation) *
                                          Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-                                         Matrix.CreateTranslation(new Vector3(graphicsDevice.Viewport.Width * 0.5f, graphicsDevice.Viewport.Height * 0.5f, 0));
+                                         Matrix.CreateTranslation(new Vector3(0, 0, 0));
             return transform;
         }
 

@@ -20,9 +20,9 @@ namespace SelDeM
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Level start;
-        Player player;
+        static Player player;
         KeyboardState oldkb, kb;
-        Camera cam;
+        public static CameraHandler camHand;
         MouseState oldms, ms;
 
         public Game1()
@@ -42,8 +42,6 @@ namespace SelDeM
             // TODO: Add your initialization logic here
             oldkb = Keyboard.GetState();
             oldms = Mouse.GetState();
-            cam = new Camera(GraphicsDevice);
-            cam.Pos = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             IsMouseVisible = true;
             base.Initialize();
         }
@@ -60,6 +58,7 @@ namespace SelDeM
             // TODO: use this.Content to load your game content here
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
             start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player);
+            camHand = new CameraHandler(GraphicsDevice,new Vector2(64,32),2,1,player.Speed);
             start.setTile(3, 3, new Tile(new Rectangle(64*3, 64*3, 64, 64), "unwalkable"));
         }
 
@@ -86,9 +85,11 @@ namespace SelDeM
             kb = Keyboard.GetState();
             ms = Mouse.GetState();
             // TODO: Add your update logic here
-            player.Update(kb, oldkb, ms, oldms);
             start.Update();
+            player.Update(kb, oldkb, ms, oldms);
+            camHand.Update(player.Rectangle);
             oldkb = kb;
+            oldms = ms;
             base.Update(gameTime);
         }
 
@@ -101,7 +102,7 @@ namespace SelDeM
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, cam.get_transformation(GraphicsDevice));
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
             player.Draw();
             start.Draw();
             spriteBatch.End();

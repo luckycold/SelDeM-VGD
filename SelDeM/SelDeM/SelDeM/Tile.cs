@@ -61,11 +61,12 @@ namespace SelDeM
                         if (rect.Intersects(player.Rectangle))
                         {
                             Vector2 direction = new Vector2(0,0);
-                            //Moves inserted rectangle away from tile depending on closest side
-                            if (player.Rectangle.X + player.Rectangle.Width <= rect.X + rect.Width / 2)
+                            //Moves inserted rectangle away from tile depending on closest side (This should not happen as it will make the player jitter if attempted to apply opposite force)
+                            if (player.Rectangle.X + player.Rectangle.Width + player.Speed <= rect.X + rect.Width / 2)
                             {
-                                direction.X--;
+                                player.CanWalk = false;
                             }
+                            //Work on not allowing player to walk if a wall is in front of you
                             else if(player.Rectangle.X> rect.X + rect.Width / 2)
                             {
                                 direction.X++;
