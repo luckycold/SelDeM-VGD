@@ -32,14 +32,14 @@ namespace SelDeM
             choice = true; //Choice1 is true, Choice2 is false
 
             this.spriteBatch = spriteBatch;
-            arrowTexture = contentManager.Load<Texture2D>("Choice Arrow");
+            arrowTexture = contentManager.Load<Texture2D>("ChoiceArrow");
 
             vector0 = new Vector2(50, 50);
             vector1 = new Vector2(50, 80);
             arrowRect = new Rectangle[3];
-            arrowRect[0] = new Rectangle(0, 0, 6, 9);
-            arrowRect[1] = new Rectangle(6, 0, 6, 9);
-            arrowRect[2] = new Rectangle((int)vector1.X, (int)vector1.Y, arrowRect[0].Width * 3, arrowRect[0].Height * 3);
+            arrowRect[0] = new Rectangle(0, 0, 20, 32);
+            arrowRect[1] = new Rectangle(0, 32, 20, 32);
+            arrowRect[2] = new Rectangle((int)vector1.X- arrowRect[0].Width, (int)vector1.Y - arrowRect[0].Height, arrowRect[0].Width, arrowRect[0].Height);
             font = contentManager.Load<SpriteFont>("DialogChoiceFont");
         }
 
@@ -55,31 +55,30 @@ namespace SelDeM
             KeyboardState kb = Keyboard.GetState();
             if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up))
             {
-                choice = true;
-                vector0 = new Vector2(50, 50);
+                choice = !choice;
+                arrowRect[2].Y = 50;
             }
-                
-            if (kb.IsKeyDown(Keys.Down) && kb.IsKeyDown(Keys.Down))
+
+            if (kb.IsKeyDown(Keys.Down) && !oldKB.IsKeyDown(Keys.Down))
             {
-                choice = false;
-                vector1 = new Vector2(80, 80);
+                choice = !choice;
+                arrowRect[2].Y = 80;
             }
-                
-            
             kb = oldKB;
         }
 
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            //if(choice == true)
-
+            //Arrow blinking
             if (gameTime.TotalGameTime.Seconds % 2 == 0)
                 spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White);
             else
                 spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[1], Color.White);
-            spriteBatch.DrawString(font, confirm[0], vector0, Color.White);
-            spriteBatch.DrawString(font, confirm[1], vector1, Color.White);
+            //Choice text
+            spriteBatch.DrawString(font, confirm[0], new Vector2(50,50), Color.White);
+            spriteBatch.DrawString(font, confirm[1], new Vector2(50,80), Color.White);
+
             spriteBatch.End();
         }
     }

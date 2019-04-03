@@ -37,8 +37,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Choice Arrow.png">
-      <Name>Choice Arrow</Name>
+    <Compile Include="ChoiceArrow.png">
+      <Name>ChoiceArrow</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
