@@ -75,7 +75,7 @@ namespace SelDeM
                 this.Exit();
 
             // TODO: Add your update logic here
-            test.Input(gameTime);
+            test.Input();
             base.Update(gameTime);
         }
 
