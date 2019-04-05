@@ -16,8 +16,14 @@ namespace SelDeM
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        private const int spriteSize = 64;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Level start;
+        static Player player;
+        KeyboardState oldkb, kb;
+        public static CameraHandler camHand;
+        MouseState oldms, ms;
 
         public Game1()
         {
@@ -34,7 +40,9 @@ namespace SelDeM
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            oldkb = Keyboard.GetState();
+            oldms = Mouse.GetState();
+            IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -48,6 +56,10 @@ namespace SelDeM
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
+            start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player);
+            camHand = new CameraHandler(GraphicsDevice,new Vector2(64,32),2,1,player.Speed);
+            //start.setTile(3, 3, new Tile(new Rectangle(64*3, 64*3, 64, 64), "unwalkable"));
         }
 
         /// <summary>
@@ -70,8 +82,14 @@ namespace SelDeM
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            kb = Keyboard.GetState();
+            ms = Mouse.GetState();
             // TODO: Add your update logic here
-
+            start.Update();
+            player.Update(kb, oldkb, ms, oldms);
+            camHand.Update(player.Rectangle);
+            oldkb = kb;
+            oldms = ms;
             base.Update(gameTime);
         }
 
@@ -84,6 +102,10 @@ namespace SelDeM
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
+            player.Draw();
+            start.Draw();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
