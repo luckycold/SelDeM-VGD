@@ -59,7 +59,7 @@ namespace SelDeM
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
             start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player);
             camHand = new CameraHandler(GraphicsDevice,new Vector2(64,32),2,1,player.Speed);
-            start.setTile(3, 3, new Tile(new Rectangle(64*3, 64*3, 64, 64), "unwalkable"));
+            //start.setTile(3, 3, new Tile(new Rectangle(64*3, 64*3, 64, 64), "unwalkable"));
         }
 
         /// <summary>
