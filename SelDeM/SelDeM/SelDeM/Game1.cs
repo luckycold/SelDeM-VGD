@@ -24,11 +24,14 @@ namespace SelDeM
         KeyboardState oldkb, kb;
         public static CameraHandler camHand;
         MouseState oldms, ms;
+        DialogBox d;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 1000;
+            graphics.PreferredBackBufferHeight = 800;
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace SelDeM
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            d = new DialogBox(spriteBatch, Content, graphics, "fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds fds fdsa s dkfjkljfk ldjj kl jflkds jlkfjdsflkdsj lkjfkldsj lkdsj lkj flkfjds jflkdsj flkdsjlkfjds lkjlkfdjs lkfjds kfdsjklf jdslkjlkdsj lkjlksjlkjflkjlkds jlkjk j lkjlk jlkjlkj lkj lkjlkj lk jl j lj kl jlk j lkj lk j lk jlkfdjslk fjdlksj  jlkfdjs lkfdsjlkfjdsjflkds ");
             // TODO: use this.Content to load your game content here
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
             start = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player);
@@ -79,7 +82,7 @@ namespace SelDeM
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
             kb = Keyboard.GetState();
@@ -100,7 +103,7 @@ namespace SelDeM
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
             player.Draw();
