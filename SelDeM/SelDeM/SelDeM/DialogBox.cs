@@ -59,15 +59,16 @@ namespace SelDeM
             int ind = 0;
             for (int i =0; i<lines.Length;i++)
             {
-                if ((i+1)%numLines==0)
+                if ((i + 1) % numLines != numLines)
+                    chunk = chunk + lines[i] + '\n';
+                else
+                    chunk = chunk + lines[i];
+                
+                if ((i + 1) % numLines == 0)
                 {
                     arr[ind] = chunk;
                     chunk = "";
                     ind++;
-                }
-                else
-                {
-                    chunk = chunk +'\n'+ lines[i];
                 }
             }
             return arr;
