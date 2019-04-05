@@ -23,7 +23,11 @@ namespace SelDeM
         private string text;
         private string[] lines;
         private int numLines, index;
-        private string[] textChunks;
+        private string[] textChunks, typedText;
+        private double typedTextLength;
+        private bool[] typedAlready;
+        int delay;
+        bool isDoneDrawing;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text)
         {
@@ -45,7 +49,16 @@ namespace SelDeM
             numLines = (int)(dialogBoxRect.Height / sp1.LineSpacing) - 2;
             //filling array with the chunks that will be displayed at a time
             textChunks = formatIntoChunks();
+            typedText = new string[textChunks.Length];
+            for (int i =0; i<typedText.Length;i++)
+                typedText[i] = "";
+            typedAlready = new bool[typedText.Length];
+            for (int i = 0; i < typedAlready.Length; i++)
+                typedAlready[i] = false;
             index = 0;
+            delay = 20;
+            isDoneDrawing = false;
+            typedTextLength = 0;
         }
 
         public string[] formatIntoChunks()
@@ -110,7 +123,7 @@ namespace SelDeM
                 ////    line = "-";
                 ////    word2 = word.Substring(index);
                 ////}
-                if (sp1.MeasureString(line+word).Length()>dialogBoxRect.Width-(int)(dialogBoxRect.Width*.06))
+                if (sp1.MeasureString(line+word).Length()>dialogBoxRect.Width-(int)(dialogBoxRect.Width*.08))
                 {
                     formattedText = formattedText + line + '\n';
                     line = "";
@@ -138,13 +151,49 @@ namespace SelDeM
             set { sp1 = value; }
         }
 
-        public void update()
+        public void update(GameTime gametime)
         {
             kb = Keyboard.GetState();
-            if (kb.IsKeyDown(Keys.Left) && !oldkb.IsKeyDown(Keys.Left))
-                lineUp();
-            if (kb.IsKeyDown(Keys.Right) && !oldkb.IsKeyDown(Keys.Right))
-                lineDown();
+            if (!isDoneDrawing)
+            {
+                if (delay == 0)
+                {
+                    typedText[index] = textChunks[index];
+                }
+                else if (typedTextLength < textChunks[index].Length)
+                {
+                    typedTextLength = typedTextLength + gametime.ElapsedGameTime.TotalMilliseconds / delay;
+                    if (typedTextLength >= textChunks[index].Length)
+                    {
+                        typedTextLength = textChunks[index].Length;
+                        isDoneDrawing = true;
+                    }
+                    typedText[index] = textChunks[index].Substring(0, (int)typedTextLength);
+                }
+            }
+            else
+            {
+                typedAlready[index] = true;
+                if (kb.IsKeyDown(Keys.Left) && !oldkb.IsKeyDown(Keys.Left))
+                {
+                    lineUp();
+                    if (!typedAlready[index])
+                    {
+                        isDoneDrawing = false;
+                        typedTextLength = 0;
+                    }
+                }
+                if (kb.IsKeyDown(Keys.Right) && !oldkb.IsKeyDown(Keys.Right))
+                {
+                    lineDown();
+                    if (!typedAlready[index])
+                    {
+                        isDoneDrawing = false;
+                        typedTextLength = 0;
+                    }
+                }
+
+            }
             oldkb = kb;
         }
 
@@ -163,7 +212,7 @@ namespace SelDeM
         public void Draw()
         {
             spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, Color.White);
-            spriteBatch.DrawString(sp1, textChunks[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
+            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
         }
     }
 }
