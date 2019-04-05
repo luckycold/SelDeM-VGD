@@ -62,22 +62,21 @@ namespace SelDeM
                         {
                             Vector2 direction = new Vector2(0,0);
                             //Moves inserted rectangle away from tile depending on closest side (This should not happen as it will make the player jitter if attempted to apply opposite force)
-                            if (player.Rectangle.X + player.Rectangle.Width + player.Speed <= rect.X + rect.Width / 2)
+                            if (player.Rectangle.X + player.Rectangle.Width + player.Speed <= rect.X + rect.Width / 2 && player.PlayerKeyboard.IsKeyDown(Keys.D))
                             {
                                 player.CanWalk = false;
                             }
-                            //Work on not allowing player to walk if a wall is in front of you
-                            else if(player.Rectangle.X> rect.X + rect.Width / 2)
+                            else if(player.Rectangle.X - player.Speed> rect.X + rect.Width / 2 && player.PlayerKeyboard.IsKeyDown(Keys.A))
                             {
-                                direction.X++;
+                                player.CanWalk = false;
                             }
-                            else if(player.Rectangle.Y <= rect.Y + rect.Height / 2)
+                            else if(player.Rectangle.Y - player.Speed <= rect.Y + rect.Height / 2 && player.PlayerKeyboard.IsKeyDown(Keys.S))
                             {
-                                direction.Y--;
+                                player.CanWalk = false;
                             }
-                            else if(player.Rectangle.Y + player.Rectangle.Height > rect.Y + rect.Height / 2)
+                            else if(player.Rectangle.Y + player.Rectangle.Height + player.Speed > rect.Y + rect.Height / 2 && player.PlayerKeyboard.IsKeyDown(Keys.W))
                             {
-                                direction.Y++;
+                                player.CanWalk = false;
                             }
                             player.move(direction, ForcefieldOffset);
                             return true;
