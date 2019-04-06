@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace SelDeM
 {
-    class Player
+    public class Player
     {
         SpriteBatch sb;
         Texture2D tex;

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace SelDeM
 {
-    class Level
+    public class Level
     {
         SpriteBatch sb;
         Texture2D tex;
@@ -20,8 +20,10 @@ namespace SelDeM
         int tileSize = 64;
         Tile[,] levelTiles;
         Player player;
+        DialogBox d;
+        Boolean isDialogVisable;
 
-        public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player)
+        public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
         {
             sb = spriteBatch;
             tex = texture;
@@ -37,6 +39,8 @@ namespace SelDeM
             }
             this.player = player;
             scrnB = screenBounds;
+            isDialogVisable = false;
+            d = new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae faucibus orci, a consequat mauris. Curabitur sed fermentum nibh. Aenean volutpat augue erat, sit amet suscipit justo consequat non. Morbi id velit in lorem gravida finibus. Curabitur euismod pellentesque purus, in rutrum nisl ultricies vel. Praesent vestibulum purus a lacinia blandit. Etiam laoreet metus ultrices tristique convallis. Vivamus lacinia et odio a dignissim. Maecenas vel lectus eu sem pulvinar condimentum. Nulla a tristique ante.");
         }
 
         public Tile[,] Tiles
@@ -61,13 +65,18 @@ namespace SelDeM
             set { rec = value; }
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             curRec = rec;
             foreach (Tile tile in levelTiles)
             {
                 if (tile.Rectangle.Intersects(scrnB))
                     tile.checkFlagForPlayer(player);
+            }
+
+            if (isDialogVisable)
+            {
+                d.update(gameTime);
             }
 
             playerBoundaryCheck();
@@ -89,6 +98,13 @@ namespace SelDeM
         public void Draw()
         {
             sb.Draw(tex, rec, Color.White);
+            if (isDialogVisable)
+                d.Draw();
+        }
+
+        public void startDialog()
+        {
+            isDialogVisable = true;
         }
     }
 }

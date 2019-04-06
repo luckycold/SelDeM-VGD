@@ -12,10 +12,10 @@ using Microsoft.Xna.Framework.Media;
 
 namespace SelDeM
 {
-    class Tile
+    public class Tile
     {
         Rectangle rect;
-        enum TileFlags { plain, unwalkable }
+        enum TileFlags { plain, unwalkable, dialog }
         TileFlags flag;
         int ForcefieldOffset = 0;
 
@@ -83,6 +83,12 @@ namespace SelDeM
                         }
                         return false;
                     }
+                case TileFlags.dialog:
+                    {
+                        if (rect.Intersects(player.Rectangle) && player.PlayerKeyboard.IsKeyDown(Keys.Enter))
+                            Game1.curLevel.startDialog();
+                        break;
+                    }
             }
             return rect.Intersects(player.Rectangle);
         }
@@ -99,6 +105,11 @@ namespace SelDeM
                 case "unwalkable":
                     {
                         flag = TileFlags.unwalkable;
+                        break;
+                    }
+                case "dialog":
+                    {
+                        flag = TileFlags.dialog;
                         break;
                     }
                 default:

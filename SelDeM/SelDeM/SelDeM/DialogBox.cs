@@ -33,7 +33,6 @@ namespace SelDeM
         {
             this.spriteBatch = spriteBatch;
             this.Content = Content;
-            Content.RootDirectory = "Content";
             sp1 = Content.Load<SpriteFont>("DialogBoxFont");
             dialogBoxTexture = Content.Load<Texture2D>("txtbox");
             //creates dialog box that will take up the lower 1/5 of the screen
