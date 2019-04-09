@@ -52,21 +52,21 @@ namespace SelDeM
             cFP = cameraFocusPoint;
             Vector2 cT = new Vector2(0, 0);
             //Moves Camera with cameraFocusPoint
-            if (cFP.X + cFP.Width > cam.pos.X + screenWidth - brdrOfst.X)
+            if (cFP.X + cFP.Width >= cam.pos.X + screenWidth - brdrOfst.X)
                 cT.X += camPS;
             if (cFP.X < cam.pos.X + brdrOfst.X)
                 cT.X -= camPS;
-            if (cFP.Y + cFP.Height > cam.pos.Y + screenHeight - brdrOfst.Y)
+            if (cFP.Y + cFP.Height >= cam.pos.Y + screenHeight - brdrOfst.Y)
                 cT.Y += camPS;
             if (cFP.Y < cam.pos.Y + brdrOfst.Y)
                 cT.Y -= camPS;
 
             //Moves Camera back onto map when it goes off screen
-            if (cam.pos.X < Level.curRec.X)
+            if (cam.pos.X <= Level.curRec.X)
                 cT.X += camPS;
             if (cam.pos.X + screenWidth > Level.curRec.X + Level.curRec.Width)
                 cT.X -= camPS;
-            if (cam.pos.Y < Level.curRec.Y)
+            if (cam.pos.Y <= Level.curRec.Y)
                 cT.Y += camPS;
             if (cam.pos.Y + screenHeight > Level.curRec.Y + Level.curRec.Height)
                 cT.Y -= camPS;

@@ -78,7 +78,6 @@ namespace SelDeM
             {
                 d.update(gameTime);
             }
-
             playerBoundaryCheck();
 
         }
