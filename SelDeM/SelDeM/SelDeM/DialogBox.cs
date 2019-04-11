@@ -29,6 +29,7 @@ namespace SelDeM
         private int delay;
         private bool isDoneDrawing;
         private List<string> choices;
+        bool endOfDialog;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> s)
         {
@@ -60,6 +61,7 @@ namespace SelDeM
             isDoneDrawing = false;
             typedTextLength = 0;
             choices = s;
+            endOfDialog = false;
         }
 
         public string[] formatIntoChunks()
@@ -204,6 +206,11 @@ namespace SelDeM
         {
             spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, Color.White);
             spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
+        }
+        public bool IsFinished
+        {
+            get { return endOfDialog; }
+            set { endOfDialog = value; }
         }
     }
 }
