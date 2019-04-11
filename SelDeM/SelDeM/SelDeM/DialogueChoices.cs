@@ -15,7 +15,7 @@ namespace SelDeM
     class DialogueChoices
     {
         String[] confirm;
-        bool choice;
+        bool choice, enterPressed;
         StreamReader reader;
         SpriteFont font;
         KeyboardState oldKB;
@@ -23,13 +23,17 @@ namespace SelDeM
         Texture2D arrowTexture;
         SpriteBatch spriteBatch;
         Vector2 vector0, vector1;
-        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager,String path)
+
+        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, List<String> choices) //show these choices from list, and then return the int of choice chosen
         {
             oldKB = Keyboard.GetState();
 
             confirm = new String[2];
-            readChoices(path);
             choice = false; //Choice1 is true, Choice2 is false
+            enterPressed = false;
+
+            readChoices(choices);
+
 
             this.spriteBatch = spriteBatch;
             arrowTexture = contentManager.Load<Texture2D>("ChoiceArrow");
@@ -44,26 +48,29 @@ namespace SelDeM
             font = contentManager.Load<SpriteFont>("DialogChoiceFont");
         }
 
-        private void readChoices(String path)
+        private void readChoices(List<String> choices)
         {
-            reader = new StreamReader(path);
-            confirm[0] = reader.ReadLine();
-            confirm[1] = reader.ReadLine();
+            confirm[0] = choices[0].ToString();
+            confirm[1] = choices[1].ToString();
         }
 
         public void Input()
         {
             KeyboardState kb = Keyboard.GetState();
-            if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up))
+            if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up) && !enterPressed)
             {
                 choice = true;
                 arrowRect[2].Y = (int)vector0.Y;
             }
 
-            if (kb.IsKeyDown(Keys.Down) && !oldKB.IsKeyDown(Keys.Down))
+            if (kb.IsKeyDown(Keys.Down) && !oldKB.IsKeyDown(Keys.Down) && !enterPressed)
             {
                 choice = false;
                 arrowRect[2].Y = (int)vector1.Y;
+            }
+            if (kb.IsKeyDown(Keys.Enter) && !oldKB.IsKeyDown(Keys.Enter))
+            {
+                enterPressed = true;
             }
             kb = oldKB;
         }
@@ -71,18 +78,36 @@ namespace SelDeM
         public void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            //Arrow blinking
-            if (gameTime.TotalGameTime.Seconds % 2 == 0)
-                spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White);
-            else
-                spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[1], Color.White);
-            //Choice text
-            spriteBatch.DrawString(font, confirm[0], vector0, Color.White);
-            spriteBatch.DrawString(font, confirm[1], vector1, Color.White);
-
-            //spriteBatch.DrawString(font, "" + choice, new Vector2(50, 50), Color.White); //to test true or false of choice
-
+            if (enterPressed != true)
+            {
+                //Arrow blinking
+                if (gameTime.TotalGameTime.Seconds % 2 == 0)
+                    spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White);
+                else
+                    spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[1], Color.White);
+                //Choice text
+                spriteBatch.DrawString(font, confirm[0], vector0, Color.White);
+                spriteBatch.DrawString(font, confirm[1], vector1, Color.White);
+            }
             spriteBatch.End();
         }
+
+        public int choiceChosen()
+        {
+            if(enterPressed)
+            {
+                if (choice == true)
+                    return 0;
+                else
+                    return 1;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        //is the end of branch, choice, the return integer
+
     }
 }
