@@ -42,6 +42,7 @@ namespace SelDeM
             int width = graphics.PreferredBackBufferWidth-100;
             int height = graphics.PreferredBackBufferHeight/5;
             dialogBoxRect = new Rectangle(50, graphics.PreferredBackBufferHeight-height-25, width, height);
+            //keyboards for input
             kb = Keyboard.GetState();
             oldkb = kb;
             this.text = feedText(text);
@@ -51,6 +52,7 @@ namespace SelDeM
             //filling array with the chunks that will be displayed at a time
             textChunks = formatIntoChunks();
             typedText = new string[textChunks.Length];
+            //initializing arrays
             for (int i =0; i<typedText.Length;i++)
                 typedText[i] = "";
             typedAlready = new bool[typedText.Length];
@@ -204,8 +206,8 @@ namespace SelDeM
 
         public void Draw()
         {
-            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, Color.White);
-            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
+            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0.99f);
+            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
         }
         public bool IsFinished
         {

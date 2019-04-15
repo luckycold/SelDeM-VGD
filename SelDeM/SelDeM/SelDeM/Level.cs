@@ -40,7 +40,7 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             isDialogVisable = false;
-            d = new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae faucibus orci, a consequat mauris. Curabitur sed fermentum nibh. Aenean volutpat augue erat, sit amet suscipit justo consequat non. Morbi id velit in lorem gravida finibus. Curabitur euismod pellentesque purus, in rutrum nisl ultricies vel. Praesent vestibulum purus a lacinia blandit. Etiam laoreet metus ultrices tristique convallis. Vivamus lacinia et odio a dignissim. Maecenas vel lectus eu sem pulvinar condimentum. Nulla a tristique ante.");
+            d = new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae faucibus orci, a consequat mauris. Curabitur sed fermentum nibh. Aenean volutpat augue erat, sit amet suscipit justo consequat non. Morbi id velit in lorem gravida finibus. Curabitur euismod pellentesque purus, in rutrum nisl ultricies vel. Praesent vestibulum purus a lacinia blandit. Etiam laoreet metus ultrices tristique convallis. Vivamus lacinia et odio a dignissim. Maecenas vel lectus eu sem pulvinar condimentum. Nulla a tristique ante.", null);
         }
 
         public Tile[,] Tiles
@@ -96,7 +96,7 @@ namespace SelDeM
 
         public void Draw()
         {
-            sb.Draw(tex, rec, Color.White);
+            sb.Draw(tex, rec, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0f);
             if (isDialogVisable)
                 d.Draw();
         }

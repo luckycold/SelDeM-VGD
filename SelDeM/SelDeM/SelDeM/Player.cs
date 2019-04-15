@@ -94,7 +94,7 @@ namespace SelDeM
 
         public void Draw()
         {
-            sb.Draw(tex, rect, Color.White);
+            sb.Draw(tex, rect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0.1f);
         }
     }
 }
