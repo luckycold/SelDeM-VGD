@@ -77,6 +77,11 @@ namespace SelDeM
             if (isDialogVisable)
             {
                 d.update(gameTime);
+                player.CanWalk = false;
+            }
+            if (d.isDone())
+            {
+                isDialogVisable = false;
             }
             playerBoundaryCheck();
 

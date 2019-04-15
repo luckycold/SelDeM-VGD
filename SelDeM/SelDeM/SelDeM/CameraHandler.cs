@@ -62,11 +62,11 @@ namespace SelDeM
                 cT.Y -= camPS;
 
             //Moves Camera back onto map when it goes off screen
-            if (cam.pos.X <= Level.curRec.X)
+            if (cam.pos.X < Level.curRec.X)
                 cT.X += camPS;
             if (cam.pos.X + screenWidth > Level.curRec.X + Level.curRec.Width)
                 cT.X -= camPS;
-            if (cam.pos.Y <= Level.curRec.Y)
+            if (cam.pos.Y < Level.curRec.Y)
                 cT.Y += camPS;
             if (cam.pos.Y + screenHeight > Level.curRec.Y + Level.curRec.Height)
                 cT.Y -= camPS;

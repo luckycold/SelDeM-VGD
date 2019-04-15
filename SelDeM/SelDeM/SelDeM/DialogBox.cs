@@ -31,7 +31,7 @@ namespace SelDeM
         private List<string> choices;
         bool endOfDialog;
 
-        public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> s)
+        public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
         {
             this.spriteBatch = spriteBatch;
             this.Content = Content;
@@ -59,10 +59,11 @@ namespace SelDeM
             for (int i = 0; i < typedAlready.Length; i++)
                 typedAlready[i] = false;
             index = 0;
+            //delay in between each letter
             delay = 20;
             isDoneDrawing = false;
             typedTextLength = 0;
-            choices = s;
+            this.choices = choices;
             endOfDialog = false;
         }
 
@@ -206,13 +207,19 @@ namespace SelDeM
 
         public void Draw()
         {
-            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0.99f);
+            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, .95f);
             spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
         }
+
         public bool IsFinished
         {
             get { return endOfDialog; }
             set { endOfDialog = value; }
+        }
+
+        public bool hasChoices()
+        {
+            return !(choices.Count == 0);
         }
     }
 }
