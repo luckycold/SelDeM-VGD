@@ -24,7 +24,7 @@ namespace SelDeM
         SpriteBatch spriteBatch;
         Vector2 vector0, vector1;
 
-        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, List<String> choices) //show these choices from list, and then return the int of choice chosen
+        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, List<String> choices) 
         {
             oldKB = Keyboard.GetState();
 
@@ -106,8 +106,6 @@ namespace SelDeM
                 return -1;
             }
         }
-
-        //is the end of branch, choice, the return integer
 
     }
 }

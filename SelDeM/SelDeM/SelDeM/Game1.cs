@@ -25,7 +25,8 @@ namespace SelDeM
         KeyboardState oldkb, kb;
         public static CameraHandler camHand;
         MouseState oldms, ms;
-        
+
+        DialogueTree test;
 
         public Game1()
         {
@@ -65,6 +66,8 @@ namespace SelDeM
             curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
             camHand = new CameraHandler(GraphicsDevice,new Vector2(64,32),2,1,player.Speed);
             curLevel.setTile(0, 0, new Tile(new Rectangle(0*3, 0*3, 64, 64), "dialog"));
+
+            test = new DialogueTree(spriteBatch, Content, graphics, "bgiuwqgbiuabfw");
         }
 
         /// <summary>
@@ -110,6 +113,7 @@ namespace SelDeM
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
             player.Draw();
             curLevel.Draw();
+            test.Draw();
             spriteBatch.End();
 
             base.Draw(gameTime);
