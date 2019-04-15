@@ -85,14 +85,16 @@ namespace SelDeM
 
         private void playerBoundaryCheck()
         {
+            Vector2 temp = new Vector2(0, 0);
             if (player.Rectangle.X < rec.X)
-                player.move(new Vector2(1, 0));
+                temp.X += 1;
             if (player.Rectangle.X + player.Rectangle.Width > rec.Width)
-                player.move(new Vector2(-1, 0));
+                temp.X -= 1;
             if (player.Rectangle.Y < rec.Y)
-                player.move(new Vector2(0, 1));
+                temp.Y += 1;
             if (player.Rectangle.Y + player.Rectangle.Height > rec.Height)
-                player.move(new Vector2(0, -1));
+                temp.Y -= 1;
+            player.move(temp);
         }
 
         public void Draw()

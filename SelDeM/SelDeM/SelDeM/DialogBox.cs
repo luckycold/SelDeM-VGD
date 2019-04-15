@@ -210,8 +210,8 @@ namespace SelDeM
 
         public void Draw()
         {
-            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, Color.White);
-            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
+            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, new Rectangle(0, 0, dialogBoxRect.Width, dialogBoxRect.Height), Color.White, 0f, new Vector2(0,0),SpriteEffects.None,1f);
+            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White, 0, new Vector2(0,0), 1f, SpriteEffects.None, 0f);
         }
     }
 }

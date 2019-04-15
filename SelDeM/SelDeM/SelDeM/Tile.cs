@@ -60,27 +60,47 @@ namespace SelDeM
                     {
                         if (rect.Intersects(player.Rectangle))
                         {
-                            Vector2 direction = new Vector2(0,0);
                             //Moves inserted rectangle away from tile depending on closest side (This should not happen as it will make the player jitter if attempted to apply opposite force)
-                            if (player.Rectangle.X + player.Rectangle.Width + player.Speed <= rect.X + rect.Width / 2 && player.PlayerKeyboard.IsKeyDown(Keys.D))
+                            if (player.Rectangle.X + player.Rectangle.Width + player.Speed <= rect.X + rect.Width / 2 && player.PlayerKeyboard.IsKeyDown(Keys.D) && (player.HorizontalTile == this || player.HorizontalTile == null))
                             {
-                                player.CanWalk = false;
+                                player.HorizontalTile = this;
+                                player.setColX(1);
+                                player.changeX(rect.X - player.Rectangle.Width);
                             }
-                            else if(player.Rectangle.X - player.Speed> rect.X + rect.Width / 2 && player.PlayerKeyboard.IsKeyDown(Keys.A))
+                            else if(player.Rectangle.X - player.Speed> rect.X + rect.Width / 2 && player.PlayerKeyboard.IsKeyDown(Keys.A) && (player.HorizontalTile == this || player.HorizontalTile == null))
                             {
-                                player.CanWalk = false;
+                                player.HorizontalTile = this;
+                                player.setColX(-1);
+                                player.changeX(rect.X + rect.Width);
                             }
-                            else if(player.Rectangle.Y - player.Speed <= rect.Y + rect.Height / 2 && player.PlayerKeyboard.IsKeyDown(Keys.S))
+                            else if(player.Rectangle.Y - player.Speed <= rect.Y + rect.Height / 2 && player.PlayerKeyboard.IsKeyDown(Keys.S) && (player.VerticalTile == this || player.VerticalTile == null))
                             {
-                                player.CanWalk = false;
+                                player.VerticalTile = this;
+                                player.setColY(1);
+                                player.changeY(rect.Y - player.Rectangle.Height);
                             }
-                            else if(player.Rectangle.Y + player.Rectangle.Height + player.Speed > rect.Y + rect.Height / 2 && player.PlayerKeyboard.IsKeyDown(Keys.W))
+                            else if(player.Rectangle.Y + player.Rectangle.Height + player.Speed > rect.Y + rect.Height / 2 && player.PlayerKeyboard.IsKeyDown(Keys.W) && (player.VerticalTile == this || player.VerticalTile == null))
                             {
-                                player.CanWalk = false;
+                                player.VerticalTile = this;
+                                player.setColY(-1);
+                                player.changeY(rect.Y + rect.Height);
                             }
-                            player.move(direction, ForcefieldOffset);
                             return true;
                         }
+                        if ((player.Rectangle.Y > rect.Y + rect.Height || player.Rectangle.Y + player.Rectangle.Height < rect.Y) ||
+                            ((player.Rectangle.X > rect.X + rect.Width) || (player.Rectangle.X + player.Rectangle.Width < rect.X)) && player.VerticalTile == this)
+                        {
+                            player.setColY(0);
+                            player.VerticalTile = null;
+                        }
+
+                        if ((player.Rectangle.X > rect.X + rect.Width || player.Rectangle.X + player.Rectangle.Width < rect.X) ||
+                            ((player.Rectangle.Y > rect.Y + rect.Height) || (player.Rectangle.Y + player.Rectangle.Height < rect.Y)) && player.HorizontalTile == this)
+                        {
+                            player.setColX(0);
+                            player.HorizontalTile = null;
+                        }
+                        
                         return false;
                     }
                 case TileFlags.dialog:
@@ -91,6 +111,11 @@ namespace SelDeM
                     }
             }
             return rect.Intersects(player.Rectangle);
+        }
+
+        internal String getLoc()
+        {
+            return rect.X + " " + rect.Y;
         }
 
         public void setTile(String tileType)

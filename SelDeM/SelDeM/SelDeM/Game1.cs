@@ -25,6 +25,7 @@ namespace SelDeM
         KeyboardState oldkb, kb;
         public static CameraHandler camHand;
         MouseState oldms, ms;
+        Texture2D test;
         
 
         public Game1()
@@ -64,7 +65,10 @@ namespace SelDeM
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
             curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
             camHand = new CameraHandler(GraphicsDevice,new Vector2(64,32),2,1,player.Speed);
-            curLevel.setTile(0, 0, new Tile(new Rectangle(0*3, 0*3, 64, 64), "dialog"));
+            curLevel.setTile(0, 0, new Tile(new Rectangle(0, 0, 64, 64), "dialog"));
+            curLevel.setTile(5, 5, new Tile(new Rectangle(64 * 5, 64 * 5, 64, 64), "unwalkable"));
+            curLevel.setTile(3, 3, new Tile(new Rectangle(64 * 3, 64 * 3, 64, 64), "unwalkable"));
+            test = this.Content.Load<Texture2D>("Hero");
         }
 
         /// <summary>
@@ -109,7 +113,11 @@ namespace SelDeM
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
             player.Draw();
+            spriteBatch.Draw(test, curLevel.Tiles[3, 3].Rectangle, Color.Blue);
+            spriteBatch.Draw(test, curLevel.Tiles[5, 5].Rectangle, Color.Green);
             curLevel.Draw();
+            
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
