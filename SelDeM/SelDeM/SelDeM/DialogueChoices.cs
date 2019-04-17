@@ -51,8 +51,10 @@ namespace SelDeM
 
         private void readChoices(List<String> choices)
         {
-            confirm[0] = choices[0].ToString();
-            confirm[1] = choices[1].ToString();
+            for(int x = 0; x < choices.Count; x++)
+            {
+                confirm[x] = choices[x].ToString();
+            }
         }
 
         public void Update()
@@ -104,8 +106,6 @@ namespace SelDeM
             {
                 return choice;
             }
-
-            //is the end of branch, choice, the return integer
 
         }
     }
