@@ -85,7 +85,7 @@ namespace SelDeM
                     }
                 case TileFlags.dialog:
                     {
-                        if (rect.Intersects(player.Rectangle) && player.PlayerKeyboard.IsKeyDown(Keys.Enter))
+                        if (rect.Intersects(player.Rectangle) && player.PlayerKeyboard.IsKeyDown(Keys.Enter) && !player.OldPlayerKeyboard.IsKeyDown(Keys.Enter))
                             Game1.curLevel.startDialog();
                         break;
                     }

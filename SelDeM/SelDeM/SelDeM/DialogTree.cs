@@ -22,10 +22,15 @@ namespace SelDeM
             _value = value;
         }
 
+        public List<DialogTree<T>> Children
+        {
+            get { return _children; }
+        }
         public DialogTree<T> this[int i]
         {
             get { return _children[i]; }
         }
+        
 
         public DialogTree<T> Parent { get; private set; }
 

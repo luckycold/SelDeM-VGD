@@ -20,14 +20,18 @@ namespace SelDeM
         int tileSize = 64;
         Tile[,] levelTiles;
         Player player;
-        DialogBox d;
         Boolean isDialogVisable;
+        DialogTree<DialogBox> dT, curTreeLoc;
+        static DialogueChoices choiceMaker;
+        ContentManager content;
+
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
         {
             sb = spriteBatch;
             tex = texture;
             this.tileSize = tileSize;
+            this.content = content;
             rec = new Rectangle(0, 0, tex.Width - tex.Width % tileSize, tex.Height - tex.Height % tileSize);
             levelTiles = new Tile[tex.Width/tileSize,tex.Height/tileSize];
             for (int row = 0; row < levelTiles.GetLength(0); row++)
@@ -40,7 +44,18 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             isDialogVisable = false;
-            d = new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae faucibus orci, a consequat mauris. Curabitur sed fermentum nibh. Aenean volutpat augue erat, sit amet suscipit justo consequat non. Morbi id velit in lorem gravida finibus. Curabitur euismod pellentesque purus, in rutrum nisl ultricies vel. Praesent vestibulum purus a lacinia blandit. Etiam laoreet metus ultrices tristique convallis. Vivamus lacinia et odio a dignissim. Maecenas vel lectus eu sem pulvinar condimentum. Nulla a tristique ante.");
+            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet                                                                                                       ", new List<string>{ "1", "2" }));
+            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1"));
+            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2"));
+            curTreeLoc = dT;
+        }
+
+        private void makeChoice(DialogBox obj)
+        {
+            if(curTreeLoc.Children.Count != 0)
+                curTreeLoc = curTreeLoc[choiceMaker.choiceChosen];
+            if(curTreeLoc.Value.Choices != null)
+                choiceMaker = new DialogueChoices(sb, content, obj.Choices);
         }
 
         public Tile[,] Tiles
@@ -73,10 +88,26 @@ namespace SelDeM
                 if (tile.Rectangle.Intersects(scrnB))
                     tile.checkFlagForPlayer(player);
             }
-
-            if (isDialogVisable)
+            if (curTreeLoc.Value.IsFinished && curTreeLoc.Children.Count == 0)
+                isDialogVisable = false;
+            if (isDialogVisable && choiceMaker == null)
             {
-                d.update(gameTime);
+                curTreeLoc.Value.update(gameTime);
+                if (curTreeLoc.Value.IsFinished)
+                    choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices);
+            }
+            else if (isDialogVisable)
+            {
+                curTreeLoc.Value.update(gameTime);
+                if (curTreeLoc.Value.IsFinished && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen == -1)
+                {
+                    choiceMaker.Update();
+                }
+
+                else if (curTreeLoc.Value.IsFinished && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen != -1)
+                {
+                    curTreeLoc.Traverse(makeChoice);
+                }
             }
 
             playerBoundaryCheck();
@@ -95,11 +126,15 @@ namespace SelDeM
                 player.move(new Vector2(0, -1));
         }
 
-        public void Draw()
+        public void Draw(GameTime gameTime)
         {
             sb.Draw(tex, rec, Color.White);
             if (isDialogVisable)
-                d.Draw();
+            {
+                curTreeLoc.Value.Draw();
+                if (curTreeLoc.Value.IsFinished)
+                    choiceMaker.Draw(gameTime);
+            }
         }
 
         public void startDialog()

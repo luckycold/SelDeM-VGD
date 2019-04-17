@@ -28,9 +28,11 @@ namespace SelDeM
         private bool[] typedAlready;
         int delay;
         bool isDoneDrawing, endOfDialog;
+        internal List<string> Choices;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text)
         {
+            Choices = null;
             this.spriteBatch = spriteBatch;
             this.Content = Content;
             sp1 = Content.Load<SpriteFont>("DialogBoxFont");
@@ -50,6 +52,39 @@ namespace SelDeM
             textChunks = formatIntoChunks();
             typedText = new string[textChunks.Length];
             for (int i =0; i<typedText.Length;i++)
+                typedText[i] = "";
+            typedAlready = new bool[typedText.Length];
+            for (int i = 0; i < typedAlready.Length; i++)
+                typedAlready[i] = false;
+            index = 0;
+            delay = 20;
+            isDoneDrawing = false;
+            typedTextLength = 0;
+            endOfDialog = false;
+        }
+
+        public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
+        {
+            Choices = choices;
+            this.spriteBatch = spriteBatch;
+            this.Content = Content;
+            sp1 = Content.Load<SpriteFont>("DialogBoxFont");
+            dialogBoxTexture = Content.Load<Texture2D>("txtbox");
+            //creates dialog box that will take up the lower 1/5 of the screen
+            this.graphics = graphics;
+            int width = graphics.PreferredBackBufferWidth - 100;
+            int height = graphics.PreferredBackBufferHeight / 5;
+            dialogBoxRect = new Rectangle(50, graphics.PreferredBackBufferHeight - height - 25, width, height);
+            kb = Keyboard.GetState();
+            oldkb = kb;
+            this.text = feedText(text);
+            lines = this.text.Split('\n');
+            //gets the amount of lines of text that can fit in the textbox
+            numLines = (int)(dialogBoxRect.Height / sp1.LineSpacing) - 2;
+            //filling array with the chunks that will be displayed at a time
+            textChunks = formatIntoChunks();
+            typedText = new string[textChunks.Length];
+            for (int i = 0; i < typedText.Length; i++)
                 typedText[i] = "";
             typedAlready = new bool[typedText.Length];
             for (int i = 0; i < typedAlready.Length; i++)
@@ -216,8 +251,8 @@ namespace SelDeM
         }
         public bool IsFinished
         {
-            get { return endOfDialog; }
-            set { endOfDialog = value; }
+            get { return isDoneDrawing; }
+            set { isDoneDrawing = value; }
         }
     }
 }

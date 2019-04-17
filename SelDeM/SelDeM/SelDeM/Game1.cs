@@ -107,9 +107,9 @@ namespace SelDeM
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
             player.Draw();
-            curLevel.Draw();
+            curLevel.Draw(gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);
