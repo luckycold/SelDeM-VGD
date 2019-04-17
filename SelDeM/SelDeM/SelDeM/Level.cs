@@ -79,7 +79,7 @@ namespace SelDeM
                 d.update(gameTime);
                 player.CanWalk = false;
             }
-            if (d.EnterPressed)
+            if (d.EnterPressed && !d.hasChoices())
             {
                 isDialogVisable = false;
             }

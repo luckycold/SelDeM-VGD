@@ -70,13 +70,10 @@ namespace SelDeM
         public string[] formatIntoChunks()
         {
             string[] arr;
-            //if (lines.Length % numLines == 0)
             if (lines.Length < numLines)
                 arr = new string[1];
             else
                 arr = new string[lines.Length / numLines];
-            //else
-            //    arr = new string[lines.Length / numLines + 1];
             string chunk = "";
             int ind = 0;
             if (lines.Length == 1)
@@ -233,7 +230,9 @@ namespace SelDeM
 
         public bool hasChoices()
         {
-            return choices.Count != 0;
+            if (choices!=null)
+                return choices.Count != 0;
+            return false;
         }
     }
 }
