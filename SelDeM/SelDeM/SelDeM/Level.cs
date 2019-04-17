@@ -108,8 +108,12 @@ namespace SelDeM
                 {
                     curTreeLoc.Traverse(makeChoice);
                 }
+                player.CanWalk = false;
             }
-
+            if (dT.value.EnterPressed)
+            {
+                isDialogVisable = false;
+            }
             playerBoundaryCheck();
 
         }
@@ -128,7 +132,7 @@ namespace SelDeM
 
         public void Draw(GameTime gameTime)
         {
-            sb.Draw(tex, rec, Color.White);
+            sb.Draw(tex, rec, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0f);
             if (isDialogVisable)
             {
                 curTreeLoc.Value.Draw();

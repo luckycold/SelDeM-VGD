@@ -89,12 +89,12 @@ namespace SelDeM
             {
                 //Arrow blinking
                 if (gameTime.TotalGameTime.Seconds % 2 == 0)
-                    spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White);
+                    spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0.99f);
                 else
-                    spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[1], Color.White);
+                    spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[1], Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0.99f);
                 //Choice text
-                spriteBatch.DrawString(font, confirm[0], vector0, Color.White);
-                spriteBatch.DrawString(font, confirm[1], vector1, Color.White);
+                spriteBatch.DrawString(font, confirm[0], vector0, Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
+                spriteBatch.DrawString(font, confirm[1], vector0, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
             }
         }
 
