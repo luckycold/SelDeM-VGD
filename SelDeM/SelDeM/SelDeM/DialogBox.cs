@@ -30,6 +30,7 @@ namespace SelDeM
         private bool isDoneDrawing;
         private List<string> choices;
         bool endOfDialog;
+        private bool enterPressed;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
         {
@@ -65,17 +66,26 @@ namespace SelDeM
             typedTextLength = 0;
             this.choices = choices;
             endOfDialog = false;
+            enterPressed = false;
         }
 
         public string[] formatIntoChunks()
         {
             string[] arr;
             //if (lines.Length % numLines == 0)
+            if (lines.Length < numLines)
+                arr = new string[1];
+            else
                 arr = new string[lines.Length / numLines];
             //else
             //    arr = new string[lines.Length / numLines + 1];
             string chunk = "";
             int ind = 0;
+            if (lines.Length == 1)
+            {
+                arr[0] = lines[0];
+                return arr;
+            }
             for (int i =0; i<lines.Length;i++)
             {
                 if ((i + 1) % numLines != numLines)
@@ -185,12 +195,24 @@ namespace SelDeM
                 }
 
             }
+            if (isDone())
+            {
+                if (kb.IsKeyDown(Keys.Enter) && !oldkb.IsKeyDown(Keys.Enter))
+                {
+                    enterPressed = true;
+                }
+            }
             oldkb = kb;
         }
 
         public bool isDone()
         {
             return (typedAlready[typedAlready.Length - 1] && (index==typedAlready.Length-1));
+        }
+
+        public bool EnterPressed
+        {
+            get { return enterPressed; }
         }
 
         public void lineUp()
