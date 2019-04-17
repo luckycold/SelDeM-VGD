@@ -29,7 +29,6 @@ namespace SelDeM
         private int delay;
         private bool isDoneDrawing;
         private List<string> choices;
-        bool endOfDialog;
         private bool enterPressed;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
@@ -65,7 +64,6 @@ namespace SelDeM
             isDoneDrawing = false;
             typedTextLength = 0;
             this.choices = choices;
-            endOfDialog = false;
             enterPressed = false;
         }
 
@@ -233,15 +231,9 @@ namespace SelDeM
             spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
         }
 
-        public bool IsFinished
-        {
-            get { return endOfDialog; }
-            set { endOfDialog = value; }
-        }
-
         public bool hasChoices()
         {
-            return !(choices.Count == 0);
+            return choices.Count != 0;
         }
     }
 }
