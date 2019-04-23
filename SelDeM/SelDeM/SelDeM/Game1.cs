@@ -90,7 +90,7 @@ namespace SelDeM
             kb = Keyboard.GetState();
             ms = Mouse.GetState();
             // TODO: Add your update logic here
-            curLevel.Update(gameTime);
+            curLevel.Update(gameTime, kb, oldkb);
             player.Update(kb, oldkb, ms, oldms);
             camHand.Update(player.Rectangle);
             oldkb = kb;

@@ -24,7 +24,7 @@ namespace SelDeM
         DialogTree<DialogBox> dT, curTreeLoc;
         static DialogueChoices choiceMaker;
         ContentManager content;
-        int timer;
+        double timer;
 
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
@@ -45,7 +45,7 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             isDialogVisable = false;
-            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet", new List<string>{ "1", "2" }));
+            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet", new List<string>{ "1 perry perry", "2 perry perry" }));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string>()));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
             curTreeLoc = dT;
@@ -82,7 +82,7 @@ namespace SelDeM
             set { rec = value; }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, KeyboardState kb, KeyboardState oldkb)
         {
             curRec = rec;
             foreach (Tile tile in levelTiles)
@@ -91,7 +91,11 @@ namespace SelDeM
                     tile.checkFlagForPlayer(player);
             }
             if (curTreeLoc.Value.EnterPressed && curTreeLoc.Children.Count == 0)
+            {
                 isDialogVisable = false;
+                curTreeLoc = dT;
+                choiceMaker = null;
+            }
             if (isDialogVisable && choiceMaker == null)
             {
                 curTreeLoc.Value.update(gameTime);
@@ -104,12 +108,12 @@ namespace SelDeM
                 if (curTreeLoc.Value.isDone() && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen == -1)
                 {
                     //ChoiceMaker is immediately making a choice when the next dialogue box is attempting to be entered.
-                    choiceMaker.Update();
+                    choiceMaker.Update(kb, oldkb);
                 }
 
                 else if (curTreeLoc.Value.isDone() && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen != -1)
                 {
-                    curTreeLoc.Traverse(makeChoice);
+                    makeChoice(curTreeLoc.Value);
                 }
                 player.CanWalk = false;
             }
@@ -135,7 +139,7 @@ namespace SelDeM
             if (isDialogVisable)
             {
                 curTreeLoc.Value.Draw();
-                if (curTreeLoc.Value.EnterPressed)
+                if ((curTreeLoc.Value.EnterPressed && curTreeLoc.Value.isDone()) || (choiceMaker != null && choiceMaker.choiceChosen != 0))
                     choiceMaker.Draw(gameTime);
             }
         }
