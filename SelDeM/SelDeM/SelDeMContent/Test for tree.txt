@@ -1,0 +1,8 @@
+This is the first line
+This is the 2nd line
+*+2
+First Choice
+*+E
+Second Choice
+*+E
+Resuming

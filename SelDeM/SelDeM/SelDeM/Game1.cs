@@ -26,7 +26,7 @@ namespace SelDeM
         public static CameraHandler camHand;
         MouseState oldms, ms;
 
-        DialogueTree test;
+        DialogueTreeBuilder test;
 
         public Game1()
         {
@@ -67,7 +67,7 @@ namespace SelDeM
             camHand = new CameraHandler(GraphicsDevice,new Vector2(64,32),2,1,player.Speed);
             curLevel.setTile(0, 0, new Tile(new Rectangle(0*3, 0*3, 64, 64), "dialog"));
 
-            test = new DialogueTree(spriteBatch, Content, graphics, "bgiuwqgbiuabfw");
+            test = new DialogueTreeBuilder(spriteBatch, Content, graphics, "C:/Users/143209/Desktop/Test for tree.txt");
         }
 
         /// <summary>
@@ -113,7 +113,8 @@ namespace SelDeM
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
             player.Draw();
             curLevel.Draw();
-            test.Draw();
+
+
             spriteBatch.End();
 
             base.Draw(gameTime);
