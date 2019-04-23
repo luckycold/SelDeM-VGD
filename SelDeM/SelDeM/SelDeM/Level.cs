@@ -20,14 +20,19 @@ namespace SelDeM
         int tileSize = 64;
         Tile[,] levelTiles;
         Player player;
-        DialogBox d;
         Boolean isDialogVisable;
+        DialogTree<DialogBox> dT, curTreeLoc;
+        static DialogueChoices choiceMaker;
+        ContentManager content;
+        double timer;
+
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
         {
             sb = spriteBatch;
             tex = texture;
             this.tileSize = tileSize;
+            this.content = content;
             rec = new Rectangle(0, 0, tex.Width - tex.Width % tileSize, tex.Height - tex.Height % tileSize);
             levelTiles = new Tile[tex.Width/tileSize,tex.Height/tileSize];
             for (int row = 0; row < levelTiles.GetLength(0); row++)
@@ -40,7 +45,19 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             isDialogVisable = false;
-            d = new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae faucibus orci, a consequat mauris. Curabitur sed fermentum nibh. Aenean volutpat augue erat, sit amet suscipit justo consequat non. Morbi id velit in lorem gravida finibus. Curabitur euismod pellentesque purus, in rutrum nisl ultricies vel. Praesent vestibulum purus a lacinia blandit. Etiam laoreet metus ultrices tristique convallis. Vivamus lacinia et odio a dignissim. Maecenas vel lectus eu sem pulvinar condimentum. Nulla a tristique ante.", null);
+            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet", new List<string>{ "1 perry perry", "2 perry perry" }));
+            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string>()));
+            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
+            curTreeLoc = dT;
+            timer = 0;
+        }
+
+        private void makeChoice(DialogBox obj)
+        {
+            if(curTreeLoc.Children.Count != 0)
+                curTreeLoc = curTreeLoc[choiceMaker.choiceChosen];
+            if(curTreeLoc.Value.Choices != null)
+                choiceMaker = new DialogueChoices(sb, content, obj.Choices);
         }
 
         public Tile[,] Tiles
@@ -65,7 +82,7 @@ namespace SelDeM
             set { rec = value; }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, KeyboardState kb, KeyboardState oldkb)
         {
             curRec = rec;
             foreach (Tile tile in levelTiles)
@@ -73,15 +90,32 @@ namespace SelDeM
                 if (tile.Rectangle.Intersects(scrnB))
                     tile.checkFlagForPlayer(player);
             }
-
-            if (isDialogVisable)
-            {
-                d.update(gameTime);
-                player.CanWalk = false;
-            }
-            if (d.EnterPressed && !d.hasChoices())
+            if (curTreeLoc.Value.EnterPressed && curTreeLoc.Children.Count == 0)
             {
                 isDialogVisable = false;
+                curTreeLoc = dT;
+                choiceMaker = null;
+            }
+            if (isDialogVisable && choiceMaker == null)
+            {
+                curTreeLoc.Value.update(gameTime);
+                if (curTreeLoc.Value.EnterPressed)
+                    choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices);
+            }
+            else if (isDialogVisable)
+            {
+                curTreeLoc.Value.update(gameTime);
+                if (curTreeLoc.Value.isDone() && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen == -1)
+                {
+                    //ChoiceMaker is immediately making a choice when the next dialogue box is attempting to be entered.
+                    choiceMaker.Update(kb, oldkb);
+                }
+
+                else if (curTreeLoc.Value.isDone() && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen != -1)
+                {
+                    makeChoice(curTreeLoc.Value);
+                }
+                player.CanWalk = false;
             }
             playerBoundaryCheck();
 
@@ -99,11 +133,15 @@ namespace SelDeM
                 player.move(new Vector2(0, -1));
         }
 
-        public void Draw()
+        public void Draw(GameTime gameTime)
         {
             sb.Draw(tex, rec, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0f);
             if (isDialogVisable)
-                d.Draw();
+            {
+                curTreeLoc.Value.Draw();
+                if ((curTreeLoc.Value.EnterPressed && curTreeLoc.Value.isDone()) || (choiceMaker != null && choiceMaker.choiceChosen != 0))
+                    choiceMaker.Draw(gameTime);
+            }
         }
 
         public void startDialog()

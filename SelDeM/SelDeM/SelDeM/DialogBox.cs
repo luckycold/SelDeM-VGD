@@ -34,6 +34,7 @@ namespace SelDeM
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
         {
+            Choices = null;
             this.spriteBatch = spriteBatch;
             this.Content = Content;
             sp1 = Content.Load<SpriteFont>("DialogBoxFont");
