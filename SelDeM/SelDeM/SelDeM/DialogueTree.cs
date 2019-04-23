@@ -19,67 +19,53 @@ namespace SelDeM
 {
     class DialogueTree
     {
-        SortedDictionary<int, string> sortedDictionary;
-        List<String> values;
+        SpriteBatch spriteBatch;
+        ContentManager content;
+        GraphicsDeviceManager graphics;
+        string[] text;
+        DialogTree<DialogBox> tree;
+        DialogBox[] children;
+        SpriteFont font;
 
-        public DialogueTree(string textpath)
+
+        public DialogueTree(SpriteBatch spriteBatch, ContentManager content, GraphicsDeviceManager graphics, string path)
         {
-            sortedDictionary = new SortedDictionary<int, string>();
-            values = new List<string>();
-            readTextFile(textpath);
+            this.spriteBatch = spriteBatch;
+            this.content = content;
+            this.graphics = graphics;
+            font = content.Load<SpriteFont>("DialogChoiceFont");
+            text = new string[7];
+            readFile(path);
             
-            for(int i = 0; i < values.Count;i++)
-            {
-                sortedDictionary.Add(i, values[i]);
-            }
 
+            DialogBox parent = new DialogBox(this.spriteBatch, this.content, this.graphics, text[0]);
+            tree = new DialogTree<DialogBox>(parent);
+            children = new DialogBox[2];
+            children[0] = new DialogBox(spriteBatch, content, graphics, text[1]);//the text will need to be changed
+            children[1] = new DialogBox(spriteBatch, content, graphics, text[2]);
+            tree.AddChildren(children);
         }
 
-        private void readTextFile(string path)
+        private void readFile(string path)
         {
             StreamReader reader = new StreamReader(path);
+            int i = 0;
             while(!reader.EndOfStream)
             {
-                values.Add(reader.ReadLine()); 
+                string temp = reader.ReadLine();
+                if (!temp.Contains("*+"))
+                {
+                    text[i] = temp;
+                    i++;
+                }
+                else
+                    continue;
             }
         }
 
-        public   whichChoice(/*int choiceNumber - How would only 0 and 1 even work for traversing tree, I think i has to be a string or an int that follows the order*/)
+        public void drawText()
         {
-
+            spriteBatch.DrawString(font, "" + tree[0].Value, new Vector2(100, 100), Color.White);
         }
-
-        //SpriteBatch spriteBatch;
-        //ContentManager content;
-        //GraphicsDeviceManager graphics;
-        //string text;
-        //DialogTree<DialogBox> tree;
-        //SpriteFont font;
-        //public DialogueTree(SpriteBatch spriteBatch, ContentManager content, GraphicsDeviceManager graphics, string text)
-        //{
-        //    this.spriteBatch = spriteBatch;
-        //    this.content = content;
-        //    this.graphics = graphics;
-        //    this.text = text;
-        //    font = content.Load<SpriteFont>("DialogBoxFont");
-        //    DialogBox parent = new DialogBox(this.spriteBatch, this.content, this.graphics, this.text);
-        //    tree = new DialogTree<DialogBox>(parent);
-        //    DialogBox child1Gen1 = new DialogBox(spriteBatch, content, graphics, text);
-        //    DialogBox child2Gen1 = new DialogBox(spriteBatch, content, graphics, text);
-        //    AddChildren(child1Gen1, child2Gen1);
-        //}
-
-        //private void AddChildren(DialogBox child1, DialogBox child2)
-        //{
-        //    tree.AddChild(child1);
-        //    tree.AddChild(child2);
-        //}
-
-        //public void Draw() //won't be drawing the tree
-        //{
-        //    spriteBatch.DrawString(font, "" + tree[1], new Vector2(0,0), Color.Red);
-        //}
-
-
     }
 }
