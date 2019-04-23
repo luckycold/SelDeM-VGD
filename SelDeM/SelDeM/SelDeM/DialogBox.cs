@@ -71,13 +71,10 @@ namespace SelDeM
         public string[] formatIntoChunks()
         {
             string[] arr;
-            //if (lines.Length % numLines == 0)
             if (lines.Length < numLines)
                 arr = new string[1];
             else
                 arr = new string[lines.Length / numLines];
-            //else
-            //    arr = new string[lines.Length / numLines + 1];
             string chunk = "";
             int ind = 0;
             if (lines.Length == 1)
@@ -230,6 +227,13 @@ namespace SelDeM
         {
             spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, .95f);
             spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
+        }
+
+        public bool hasChoices()
+        {
+            if (choices!=null)
+                return choices.Count != 0;
+            return false;
         }
     }
 }
