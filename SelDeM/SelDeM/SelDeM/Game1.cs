@@ -91,7 +91,7 @@ namespace SelDeM
             ms = Mouse.GetState();
             // TODO: Add your update logic here
             camHand.Update(player.Rectangle);
-            curLevel.Update(gameTime);
+            curLevel.Update(gameTime, kb, oldkb);
             player.Update(kb, oldkb, ms, oldms);
             oldkb = kb;
             oldms = ms;
@@ -109,7 +109,7 @@ namespace SelDeM
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
             player.Draw();
-            curLevel.Draw();
+            curLevel.Draw(gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);

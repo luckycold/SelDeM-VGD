@@ -47,6 +47,11 @@ namespace SelDeM
             get { return k; }
         }
 
+        public KeyboardState OldPlayerKeyboard
+        {
+            get { return o; }
+        }
+
         public Boolean CanWalk
         {
             get { return canWalk; }
