@@ -30,6 +30,7 @@ namespace SelDeM
         private bool isDoneDrawing;
         private List<string> choices;
         private bool enterPressed;
+        private Vector2 rectangleStartingPosition;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
         {
@@ -65,6 +66,7 @@ namespace SelDeM
             typedTextLength = 0;
             this.choices = choices;
             enterPressed = false;
+            rectangleStartingPosition = new Vector2(dialogBoxRect.X, dialogBoxRect.Y);
         }
 
         public string[] formatIntoChunks()
@@ -224,8 +226,11 @@ namespace SelDeM
 
         public void Draw()
         {
-            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, .95f);
-            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
+            int camerapositionX =(int) Game1.camHand.Camera.Pos.X;
+            int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
+            Vector2 textPos = new Vector2(dialogBoxRect.X + (int)(dialogBoxRect.Width * .04) + camerapositionX, dialogBoxRect.Y + (int)(dialogBoxRect.Height * .15) + camerapositionY);
+            spriteBatch.Draw(dialogBoxTexture, new Rectangle(dialogBoxRect.X+camerapositionX, dialogBoxRect.Y+camerapositionY, dialogBoxRect.Width, dialogBoxRect.Height) , null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, .95f);
+            spriteBatch.DrawString(sp1, typedText[index], textPos, Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
         }
 
         public bool hasChoices()
