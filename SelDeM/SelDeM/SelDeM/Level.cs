@@ -22,7 +22,6 @@ namespace SelDeM
         Player player;
         DialogBox d;
         Boolean isDialogVisable;
-        DialogueTree tree;
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
         {
@@ -42,7 +41,6 @@ namespace SelDeM
             scrnB = screenBounds;
             isDialogVisable = false;
             d = new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae faucibus orci, a consequat mauris. Curabitur sed fermentum nibh. Aenean volutpat augue erat, sit amet suscipit justo consequat non. Morbi id velit in lorem gravida finibus. Curabitur euismod pellentesque purus, in rutrum nisl ultricies vel. Praesent vestibulum purus a lacinia blandit. Etiam laoreet metus ultrices tristique convallis. Vivamus lacinia et odio a dignissim. Maecenas vel lectus eu sem pulvinar condimentum. Nulla a tristique ante.");
-            tree = new DialogueTree(spriteBatch, content, graphics, @"D:/Video Game Design/Dialog.txt");
         }
 
         public Tile[,] Tiles
@@ -103,7 +101,6 @@ namespace SelDeM
             if (isDialogVisable)
             {
                 d.Draw();
-                tree.drawText();
             }
                 
                 

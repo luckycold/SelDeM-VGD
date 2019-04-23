@@ -14,31 +14,53 @@ namespace SelDeM
 {
     class DialogueTreeBuilder
     {
-        DialogTree<DialogBox> tree;
+        SpriteBatch spriteBatch;
+        ContentManager content;
+        GraphicsDeviceManager graphics;
         string[] text;
+        DialogTree<DialogBox> tree;
+        DialogBox[] children;
+        SpriteFont font;
+
 
         public DialogueTreeBuilder(SpriteBatch spriteBatch, ContentManager content, GraphicsDeviceManager graphics, string path)
         {
-            text = new string[3];
+            this.spriteBatch = spriteBatch;
+            this.content = content;
+            this.graphics = graphics;
+            font = content.Load<SpriteFont>("DialogChoiceFont");
+            text = new string[7];
             readFile(path);
 
-            DialogBox parent = new DialogBox(spriteBatch, content, graphics, text[0]);
-            tree = new DialogTree<DialogBox>(parent); //tree is null for some reason
-            DialogBox[] child = new DialogBox[2];
-            child[0] = new DialogBox(spriteBatch, content, graphics, text[1]);
-            child[1] = new DialogBox(spriteBatch, content, graphics, text[2]);
-            tree.AddChildren(child);
+
+            DialogBox parent = new DialogBox(this.spriteBatch, this.content, this.graphics, text[0]);
+            tree = new DialogTree<DialogBox>(parent);
+            children = new DialogBox[2];
+            children[0] = new DialogBox(spriteBatch, content, graphics, text[1]);//the text will need to be changed
+            children[1] = new DialogBox(spriteBatch, content, graphics, text[2]);
+            tree.AddChildren(children);
         }
 
         private void readFile(string path)
         {
             StreamReader reader = new StreamReader(path);
-            text[0] = reader.ReadLine() + reader.ReadLine();
-            reader.ReadLine(); //Reads *+2
-            text[1] = reader.ReadLine();
-            reader.ReadLine(); //Reads *+E
-            text[2] = reader.ReadLine();
-            reader.ReadLine(); //Reads *+E
+            int i = 0;
+            while (!reader.EndOfStream)
+            {
+                string temp = reader.ReadLine();
+                if (!temp.Contains("*+"))
+                {
+                    text[i] = temp;
+                    i++;
+                }
+                else
+                    continue;
+            }
+        }
+
+        public void drawText()
+        {
+            spriteBatch.DrawString(font, "" + tree[0].Value, new Vector2(100, 100), Color.White);
         }
     }
 }
