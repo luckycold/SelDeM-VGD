@@ -105,15 +105,14 @@ namespace SelDeM
             else if (isDialogVisable)
             {
                 curTreeLoc.Value.update(gameTime);
-                if (curTreeLoc.Value.isDone() && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen == -1)
+                if (curTreeLoc.Value.isDone() && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen != -1)
+                {
+                    makeChoice(curTreeLoc.Value);
+                }
+                else if (curTreeLoc.Value.isDone() && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen == -1)
                 {
                     //ChoiceMaker is immediately making a choice when the next dialogue box is attempting to be entered.
                     choiceMaker.Update(kb, oldkb);
-                }
-
-                else if (curTreeLoc.Value.isDone() && curTreeLoc.Value.Choices != null && choiceMaker.choiceChosen != -1)
-                {
-                    makeChoice(curTreeLoc.Value);
                 }
                 player.CanWalk = false;
             }
