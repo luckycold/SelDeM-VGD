@@ -26,11 +26,14 @@ namespace SelDeM
         private string[] textChunks, typedText;
         private double typedTextLength;
         private bool[] typedAlready;
-        int delay;
-        bool isDoneDrawing, endOfDialog;
+        private int delay;
+        private bool isDoneDrawing;
+        private List<string> choices;
+        private bool enterPressed;
 
-        public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text)
+        public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
         {
+            Choices = null;
             this.spriteBatch = spriteBatch;
             this.Content = Content;
             sp1 = Content.Load<SpriteFont>("DialogBoxFont");
@@ -40,6 +43,7 @@ namespace SelDeM
             int width = graphics.PreferredBackBufferWidth-100;
             int height = graphics.PreferredBackBufferHeight/5;
             dialogBoxRect = new Rectangle(50, graphics.PreferredBackBufferHeight-height-25, width, height);
+            //keyboards for input
             kb = Keyboard.GetState();
             oldkb = kb;
             this.text = feedText(text);
@@ -49,27 +53,35 @@ namespace SelDeM
             //filling array with the chunks that will be displayed at a time
             textChunks = formatIntoChunks();
             typedText = new string[textChunks.Length];
+            //initializing arrays
             for (int i =0; i<typedText.Length;i++)
                 typedText[i] = "";
             typedAlready = new bool[typedText.Length];
             for (int i = 0; i < typedAlready.Length; i++)
                 typedAlready[i] = false;
             index = 0;
+            //delay in between each letter
             delay = 20;
             isDoneDrawing = false;
             typedTextLength = 0;
-            endOfDialog = false;
+            this.choices = choices;
+            enterPressed = false;
         }
 
         public string[] formatIntoChunks()
         {
             string[] arr;
-            //if (lines.Length % numLines == 0)
+            if (lines.Length < numLines)
+                arr = new string[1];
+            else
                 arr = new string[lines.Length / numLines];
-            //else
-            //    arr = new string[lines.Length / numLines + 1];
             string chunk = "";
             int ind = 0;
+            if (lines.Length == 1)
+            {
+                arr[0] = lines[0];
+                return arr;
+            }
             for (int i =0; i<lines.Length;i++)
             {
                 if ((i + 1) % numLines != numLines)
@@ -97,32 +109,6 @@ namespace SelDeM
             foreach (string word in words)
             {
                 //checks to see if the next word can fit on the current line
-                ////if (sp1.MeasureString(word).Length() > (dialogBoxRect.Width - (int)(dialogBoxRect.Width * .06)))
-                ////{
-                ////    int index = 0;
-                ////    char[] letters = word.ToArray<char>();
-                ////    for (int i = letters.Length - 1; i > 0; i--)
-                ////    {
-                ////        string temp1 = "";
-                ////        for (int j = 0; j < i; j++)
-                ////        {
-                ////            temp1 = temp1 + letters[j];
-                ////        }
-                ////        if (sp1.MeasureString(temp1).Length() > (dialogBoxRect.Width - (int)(dialogBoxRect.Width * .06)))
-                ////        {
-                ////            index = i;
-                ////            break;
-                ////        }
-                ////    }
-                ////    string final = "";
-                ////    for (int i = 0; i < index; i++)
-                ////    {
-                ////        final = final + letters[i];
-                ////    }
-                ////    formattedText = formattedText + final + '\n';
-                ////    line = "-";
-                ////    word2 = word.Substring(index);
-                ////}
                 if (sp1.MeasureString(line+word).Length()>dialogBoxRect.Width-(int)(dialogBoxRect.Width*.08))
                 {
                     formattedText = formattedText + line + '\n';
@@ -131,6 +117,17 @@ namespace SelDeM
                 line = line + word + ' ';
             }
             return formattedText + line;
+        }
+
+        public List<string> Choices
+        {
+            get { return choices; }
+            set { choices = value; }
+        }
+
+        public int numChoices
+        {
+            get { return choices.Count; }
         }
 
         public Rectangle Rectangle
@@ -194,7 +191,24 @@ namespace SelDeM
                 }
 
             }
+            if (isDone())
+            {
+                if (kb.IsKeyDown(Keys.Enter) && !oldkb.IsKeyDown(Keys.Enter))
+                {
+                    enterPressed = true;
+                }
+            }
             oldkb = kb;
+        }
+
+        public bool isDone()
+        {
+            return (typedAlready[typedAlready.Length - 1] && (index==typedAlready.Length-1));
+        }
+
+        public bool EnterPressed
+        {
+            get { return enterPressed; }
         }
 
         public void lineUp()
@@ -211,13 +225,15 @@ namespace SelDeM
 
         public void Draw()
         {
-            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, Color.White);
-            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White);
+            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, .95f);
+            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
         }
-        public bool IsFinished
+
+        public bool hasChoices()
         {
-            get { return endOfDialog; }
-            set { endOfDialog = value; }
+            if (choices!=null)
+                return choices.Count != 0;
+            return false;
         }
     }
 }
