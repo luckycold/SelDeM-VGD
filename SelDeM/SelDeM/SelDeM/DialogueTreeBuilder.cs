@@ -50,7 +50,34 @@ namespace SelDeM
             //children[0] = new DialogBox(spriteBatch, content, graphics, text[1]);
             //children[1] = new DialogBox(spriteBatch, content, graphics, text[2]);
 
-            tree.AddChildren(children);
+            
+
+            //reader.DiscardBufferedData();
+            //int i = 0;
+            //int nodeNum = 0;
+            //bool hasMore = false;
+            //reader.ReadLine(); //to read the parent text
+            //while(!reader.EndOfStream)
+            //{
+            //    string temp = reader.ReadLine();
+            //    i++;
+            //    if (temp.Equals("*+2"))
+            //    {
+            //        nodeNum++;
+            //        tree[nodeNum - 1].AddChild(new DialogBox(spriteBatch, content, graphics, text[i + 1])); //nodeNum-1 to go to parent and i+1 to look forward one in array
+            //        hasMore = true;
+            //        //Need to keep in mind when the second child of this gen gets made
+            //    }
+            //    else if (temp.Equals("*+E"))
+            //    {
+            //        tree[nodeNum - 1].AddChild(new DialogBox(spriteBatch, content, graphics, text[i - 1]));
+            //    }
+            //    else
+            //        continue;
+            //}
+
+
+            //tree.AddChildren(children);
             //tree[2].addChildren();
         }
 
@@ -63,17 +90,19 @@ namespace SelDeM
         {
             StreamReader reader = new StreamReader(path);
             int i = 0;
-            int times2 = 0;
             while (!reader.EndOfStream)
             {
+                //string temp = reader.ReadLine();
+                //if (!temp.Contains("*+"))
+                //{
+                //    text[i] = temp;
+                //    i++;
+                //}
+                //else
+                //    continue;
                 string temp = reader.ReadLine();
-                if (!temp.Contains("*+"))
-                {
-                    text[i] = temp;
-                    i++;
-                }
-                else
-                    continue;
+                text[i] = temp;
+                i++;
             }
         }
     }
