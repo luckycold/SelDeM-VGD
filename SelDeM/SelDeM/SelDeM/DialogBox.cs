@@ -19,7 +19,6 @@ namespace SelDeM
         private Texture2D dialogBoxTexture;
         ContentManager Content;
         GraphicsDeviceManager graphics;
-        KeyboardState kb, oldkb;
         private string text;
         private string[] lines;
         private int numLines, index;
@@ -45,8 +44,6 @@ namespace SelDeM
             int height = graphics.PreferredBackBufferHeight/5;
             dialogBoxRect = new Rectangle(50, graphics.PreferredBackBufferHeight-height-25, width, height);
             //keyboards for input
-            kb = Keyboard.GetState();
-            oldkb = kb;
             this.text = feedText(text);
             lines = this.text.Split('\n');
             //gets the amount of lines of text that can fit in the textbox
@@ -62,7 +59,7 @@ namespace SelDeM
                 typedAlready[i] = false;
             index = 0;
             //delay in between each letter
-            delay = 20;
+            delay = 5;
             isDoneDrawing = false;
             typedTextLength = 0;
             this.choices = choices;
@@ -150,9 +147,8 @@ namespace SelDeM
             set { sp1 = value; }
         }
 
-        public void update(GameTime gametime)
+        public void update(GameTime gametime, KeyboardState kb, KeyboardState oldkb)
         {
-            kb = Keyboard.GetState();
             if (!isDoneDrawing)
             {
                 if (delay == 0)
@@ -193,19 +189,18 @@ namespace SelDeM
                 }
 
             }
-            if (isDone())
+            if (isDone)
             {
                 if (kb.IsKeyDown(Keys.Enter) && !oldkb.IsKeyDown(Keys.Enter))
                 {
                     enterPressed = true;
                 }
             }
-            oldkb = kb;
         }
 
-        public bool isDone()
+        public bool isDone
         {
-            return (typedAlready[typedAlready.Length - 1] && (index==typedAlready.Length-1));
+            get { return (typedAlready[typedAlready.Length - 1] && (index == typedAlready.Length - 1)); }
         }
 
         public bool EnterPressed

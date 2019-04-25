@@ -61,7 +61,7 @@ namespace SelDeM
         {
             if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up) && !enterPressed)
             {
-                if (choice < 0)
+                if (choice > 0)
                 {
                     choice--;
                     arrowRect[2].Y -= arrowRect[2].Height/2;
