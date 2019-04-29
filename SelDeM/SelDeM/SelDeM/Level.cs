@@ -45,7 +45,7 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             isDialogVisable = false;
-            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet ", new List<string>{ "1 perry perry", "2 perry perry" }));
+            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet", new List<string>{ "1 perry perry", "2 perry perry" }));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string>()));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
             curTreeLoc = dT;
@@ -85,11 +85,15 @@ namespace SelDeM
             {
                 curTreeLoc.Value.update(gameTime, kb, oldkb);
                 player.CanWalk = false;
-                //if (curTreeLoc.Value.EnterPressed && curTreeLoc.Value.isDone())
-                //{
-                //    player.CanWalk = true;
-                //    isDialogVisable = false;
-                //}
+                if (curTreeLoc.Value.EnterPressed && curTreeLoc.Value.isDone)
+                {
+                    if (curTreeLoc.Value.hasChoices())
+                    {
+
+                    }
+                    player.CanWalk = true;
+                    isDialogVisable = false;
+                }
             }
             
             playerBoundaryCheck();

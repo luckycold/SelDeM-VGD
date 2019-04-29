@@ -20,13 +20,14 @@ namespace SelDeM
         SpriteFont font;
         KeyboardState oldKB;
         Rectangle[] arrowRect;
-        Texture2D arrowTexture;
+        Texture2D arrowTexture, boxTexture;
+        Rectangle boxRect;
         SpriteBatch spriteBatch;
         Vector2 vector0, vector1;
         int maxChoice, choice;
         Vector2 textPos;
 
-        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, List<String> choices) //show these choices from list, and then return the int of choice chosen
+        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, List<String> choices, GraphicsDeviceManager graphics) //show these choices from list, and then return the int of choice chosen
         {
             oldKB = Keyboard.GetState();
             maxChoice = choices.Count;
@@ -44,9 +45,17 @@ namespace SelDeM
             arrowRect[0] = new Rectangle(0, 0, 20, 32);
             arrowRect[1] = new Rectangle(0, 32, 20, 32);
             arrowRect[2] = new Rectangle(50, 800, arrowRect[0].Width, arrowRect[0].Height);
-            textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
+            //textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
+            int camerapositionX = (int)Game1.camHand.Camera.Pos.X;
+            int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
+            textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .04) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
 
             font = contentManager.Load<SpriteFont>("DialogChoiceFont");
+
+            int width = graphics.PreferredBackBufferWidth - 100;
+            int height = graphics.PreferredBackBufferHeight / 5;
+            boxRect = new Rectangle(50, graphics.PreferredBackBufferHeight - height - 25, width, height);
+            boxTexture = contentManager.Load<Texture2D>("txtbox");
         }
 
         private void readChoices(List<String> choices)
@@ -87,6 +96,10 @@ namespace SelDeM
         {
             if (enterPressed != true)
             {
+                int camerapositionX = (int)Game1.camHand.Camera.Pos.X;
+                int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
+                textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .04) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
+                spriteBatch.Draw(boxTexture, new Rectangle(boxRect.X + camerapositionX, boxRect.Y + camerapositionY, boxRect.Width, boxRect.Height), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, .95f);
                 //Arrow blinking
                 if (gameTime.TotalGameTime.Seconds % 2 == 0)
                     spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0.99f);

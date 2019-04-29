@@ -73,7 +73,7 @@ namespace SelDeM
             if (lines.Length < numLines)
                 arr = new string[1];
             else
-                arr = new string[lines.Length / numLines];
+                arr = new string[(lines.Length / numLines)+1];
             string chunk = "";
             int ind = 0;
             if (lines.Length == 1)
@@ -87,8 +87,7 @@ namespace SelDeM
                     chunk = chunk + lines[i] + '\n';
                 else
                     chunk = chunk + lines[i];
-                
-                if ((i + 1) % numLines == 0)
+                if (((i + 1) % numLines == 0) ||( i == lines.Length - 1))
                 {
                     arr[ind] = chunk;
                     chunk = "";
