@@ -19,7 +19,6 @@ namespace SelDeM
         private Texture2D dialogBoxTexture;
         ContentManager Content;
         GraphicsDeviceManager graphics;
-        KeyboardState kb, oldkb;
         private string text;
         private string[] lines;
         private int numLines, index;
@@ -30,6 +29,7 @@ namespace SelDeM
         private bool isDoneDrawing;
         private List<string> choices;
         private bool enterPressed;
+        private Vector2 rectangleStartingPosition;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
         {
@@ -44,8 +44,6 @@ namespace SelDeM
             int height = graphics.PreferredBackBufferHeight/5;
             dialogBoxRect = new Rectangle(50, graphics.PreferredBackBufferHeight-height-25, width, height);
             //keyboards for input
-            kb = Keyboard.GetState();
-            oldkb = kb;
             this.text = feedText(text);
             lines = this.text.Split('\n');
             //gets the amount of lines of text that can fit in the textbox
@@ -61,11 +59,12 @@ namespace SelDeM
                 typedAlready[i] = false;
             index = 0;
             //delay in between each letter
-            delay = 20;
+            delay = 5;
             isDoneDrawing = false;
             typedTextLength = 0;
             this.choices = choices;
             enterPressed = false;
+            rectangleStartingPosition = new Vector2(dialogBoxRect.X, dialogBoxRect.Y);
         }
 
         public string[] formatIntoChunks()
@@ -74,7 +73,7 @@ namespace SelDeM
             if (lines.Length < numLines)
                 arr = new string[1];
             else
-                arr = new string[lines.Length / numLines];
+                arr = new string[(lines.Length / numLines)+1];
             string chunk = "";
             int ind = 0;
             if (lines.Length == 1)
@@ -88,8 +87,7 @@ namespace SelDeM
                     chunk = chunk + lines[i] + '\n';
                 else
                     chunk = chunk + lines[i];
-                
-                if ((i + 1) % numLines == 0)
+                if (((i + 1) % numLines == 0) ||( i == lines.Length - 1))
                 {
                     arr[ind] = chunk;
                     chunk = "";
@@ -148,9 +146,8 @@ namespace SelDeM
             set { sp1 = value; }
         }
 
-        public void update(GameTime gametime)
+        public void update(GameTime gametime, KeyboardState kb, KeyboardState oldkb)
         {
-            kb = Keyboard.GetState();
             if (!isDoneDrawing)
             {
                 if (delay == 0)
@@ -191,19 +188,18 @@ namespace SelDeM
                 }
 
             }
-            if (isDone())
+            if (isDone)
             {
                 if (kb.IsKeyDown(Keys.Enter) && !oldkb.IsKeyDown(Keys.Enter))
                 {
                     enterPressed = true;
                 }
             }
-            oldkb = kb;
         }
 
-        public bool isDone()
+        public bool isDone
         {
-            return (typedAlready[typedAlready.Length - 1] && (index==typedAlready.Length-1));
+            get { return (typedAlready[typedAlready.Length - 1] && (index == typedAlready.Length - 1)); }
         }
 
         public bool EnterPressed
@@ -225,8 +221,11 @@ namespace SelDeM
 
         public void Draw()
         {
-            spriteBatch.Draw(dialogBoxTexture, dialogBoxRect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, .95f);
-            spriteBatch.DrawString(sp1, typedText[index], new Vector2(dialogBoxRect.X+(int)(dialogBoxRect.Width*.04), dialogBoxRect.Y+(int)(dialogBoxRect.Height*.15)), Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
+            int camerapositionX =(int) Game1.camHand.Camera.Pos.X;
+            int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
+            Vector2 textPos = new Vector2(dialogBoxRect.X + (int)(dialogBoxRect.Width * .04) + camerapositionX, dialogBoxRect.Y + (int)(dialogBoxRect.Height * .15) + camerapositionY);
+            spriteBatch.Draw(dialogBoxTexture, new Rectangle(dialogBoxRect.X+camerapositionX, dialogBoxRect.Y+camerapositionY, dialogBoxRect.Width, dialogBoxRect.Height) , null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, .95f);
+            spriteBatch.DrawString(sp1, typedText[index], textPos, Color.White, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 1f);
         }
 
         public bool hasChoices()
