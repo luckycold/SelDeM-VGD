@@ -24,7 +24,8 @@ namespace SelDeM
         DialogTree<DialogBox> dT, curTreeLoc;
         static DialogueChoices choiceMaker;
         ContentManager content;
-        bool isChoiceVisable;
+        bool isChoiceVisable, timerStart;
+        int timer;
 
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
@@ -49,6 +50,10 @@ namespace SelDeM
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string>()));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
             curTreeLoc = dT;
+            isChoiceVisable = false;
+            choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices, graphics);
+            timer = 10;
+            timerStart = false;
         }
 
         public Tile[,] Tiles
@@ -89,13 +94,29 @@ namespace SelDeM
                 {
                     if (curTreeLoc.Value.hasChoices())
                     {
-
+                        timerStart = true;
                     }
-                    player.CanWalk = true;
+                }
+            }
+            if (timerStart)
+            {
+                if (!kb.IsKeyDown(Keys.Enter))
+                    timer--;
+                if (timer <= 0)
+                {
+                    timerStart = false;
+                    isChoiceVisable = true;
+                    timer = 10;
+                    oldkb = kb;
+                    kb = Keyboard.GetState();
                     isDialogVisable = false;
                 }
             }
-            
+            if (isChoiceVisable)
+            {
+                choiceMaker.Update(kb, oldkb);
+                player.CanWalk = false;
+            }
             playerBoundaryCheck();
 
         }
@@ -118,6 +139,10 @@ namespace SelDeM
             if (isDialogVisable)
             {
                 curTreeLoc.Value.Draw();
+            }
+            if (isChoiceVisable)
+            {
+                choiceMaker.Draw(gameTime);
             }
         }
 

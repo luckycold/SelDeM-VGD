@@ -62,8 +62,8 @@ namespace SelDeM
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
+            camHand = new CameraHandler(GraphicsDevice, new Vector2(64, 32), 2, 1, player.Speed);
             curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
-            camHand = new CameraHandler(GraphicsDevice,new Vector2(64,32),2,1,player.Speed);
             curLevel.setTile(0, 0, new Tile(new Rectangle(0*3, 0*3, 64, 64), "dialog"));
         }
 
