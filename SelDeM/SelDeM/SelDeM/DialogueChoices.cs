@@ -47,7 +47,7 @@ namespace SelDeM
             arrowRect = new Rectangle[3];
             arrowRect[0] = new Rectangle((int)textPos.X, 0, 20, 32);
             arrowRect[1] = new Rectangle((int)textPos.X, 32, 20, 32);
-            arrowRect[2] = new Rectangle((int)textPos.X + 50,800, arrowRect[0].Width, arrowRect[0].Height);
+            arrowRect[2] = new Rectangle((int)textPos.X + 50, 720, arrowRect[0].Width, arrowRect[0].Height);
             //textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
 
             font = contentManager.Load<SpriteFont>("DialogChoiceFont");
@@ -73,16 +73,16 @@ namespace SelDeM
                 if (choice > 0)
                 {
                     choice--;
-                    arrowRect[2].Y -= arrowRect[2].Height/2;
+                    arrowRect[2].Y -= arrowRect[2].Height;
                 }
             }
 
             if (kb.IsKeyDown(Keys.Down) && !oldKB.IsKeyDown(Keys.Down) && !enterPressed)
             {
-                if (choice < maxChoice)
+                if (choice < maxChoice - 1)
                 {
                     choice++;
-                    arrowRect[2].Y += arrowRect[2].Height / 2;
+                    arrowRect[2].Y += arrowRect[2].Height;
                 }
 
             }
@@ -110,7 +110,7 @@ namespace SelDeM
                 //Choice text
                 for(int x = 0; x < confirm.Length; x++)
                 {
-                    spriteBatch.DrawString(font, confirm[x], new Vector2(textPos.X, textPos.Y + (x * arrowRect[0].Height/2)), Color.White,0f,Vector2.Zero, 1, SpriteEffects.None,1f);
+                    spriteBatch.DrawString(font, confirm[x], new Vector2(textPos.X, textPos.Y + (x * arrowRect[0].Height)), Color.White,0f,Vector2.Zero, 1, SpriteEffects.None,1f);
                 }
                 
             }

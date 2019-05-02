@@ -33,10 +33,8 @@ namespace SelDeM
             int length = 0;
             text = new string[length];
 
-            DialogBox parent = new DialogBox(this.spriteBatch, this.content, this.graphics, text[0]);
-            tree = new DialogTree<DialogBox>(parent);
-            
-            
+
+
         }
 
         public DialogTree<DialogBox> getDialogBox(int i) //The way to use this is to first have an object of DialogueTreeBuilder, then: [objectName].getDialogBox([nodeNumber]).[DialogBoxMethods];
@@ -44,4 +42,5 @@ namespace SelDeM
             return tree[i];
         }
 
+    }
 }
