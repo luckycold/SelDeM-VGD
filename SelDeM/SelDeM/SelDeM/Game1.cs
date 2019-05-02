@@ -25,7 +25,7 @@ namespace SelDeM
         KeyboardState oldkb, kb;
         public static CameraHandler camHand;
         MouseState oldms, ms;
-        
+
 
         public Game1()
         {
@@ -65,6 +65,10 @@ namespace SelDeM
             camHand = new CameraHandler(GraphicsDevice, new Vector2(64, 32), 2, 1, player.Speed);
             curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
             curLevel.setTile(0, 0, new Tile(new Rectangle(0*3, 0*3, 64, 64), "dialog"));
+
+
+
+
         }
 
         /// <summary>
