@@ -18,7 +18,7 @@ namespace SelDeM
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         private const int spriteSize = 64;
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Level curLevel;
         static Player player;

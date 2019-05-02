@@ -94,7 +94,14 @@ namespace SelDeM
                 {
                     if (curTreeLoc.Value.hasChoices())
                     {
+                        choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices, Game1.graphics);
                         timerStart = true;
+                    }
+                    else
+                    {
+                        isDialogVisable = false;
+                        isChoiceVisable = false;
+                        player.CanWalk = true;
                     }
                 }
             }
@@ -115,6 +122,11 @@ namespace SelDeM
             if (isChoiceVisable)
             {
                 choiceMaker.Update(kb, oldkb);
+                if (choiceMaker.choiceChosen!=-1)
+                {
+                    curTreeLoc = curTreeLoc.Children[choiceMaker.choiceChosen];
+                    isChoiceVisable = false;
+                }
                 player.CanWalk = false;
             }
             playerBoundaryCheck();
