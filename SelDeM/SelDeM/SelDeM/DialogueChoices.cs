@@ -79,7 +79,7 @@ namespace SelDeM
 
             if (kb.IsKeyDown(Keys.Down) && !oldKB.IsKeyDown(Keys.Down) && !enterPressed)
             {
-                if (choice < maxChoice)
+                if (choice < maxChoice-1)
                 {
                     choice++;
                     arrowRect[2].Y += arrowRect[2].Height / 2;
