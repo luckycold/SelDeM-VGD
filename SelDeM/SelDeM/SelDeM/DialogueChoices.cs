@@ -41,14 +41,14 @@ namespace SelDeM
             arrowTexture = contentManager.Load<Texture2D>("ChoiceArrow");
 
             //these vectors will change the location of both the text and the arrow image
-            arrowRect = new Rectangle[3];
-            arrowRect[0] = new Rectangle(0, 0, 20, 32);
-            arrowRect[1] = new Rectangle(0, 32, 20, 32);
-            arrowRect[2] = new Rectangle(50, 800, arrowRect[0].Width, arrowRect[0].Height);
-            //textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
             int camerapositionX = (int)Game1.camHand.Camera.Pos.X;
             int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
             textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .04) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
+            arrowRect = new Rectangle[3];
+            arrowRect[0] = new Rectangle((int)textPos.X, 0, 20, 32);
+            arrowRect[1] = new Rectangle((int)textPos.X, 32, 20, 32);
+            arrowRect[2] = new Rectangle((int)textPos.X + 50,800, arrowRect[0].Width, arrowRect[0].Height);
+            //textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
 
             font = contentManager.Load<SpriteFont>("DialogChoiceFont");
 
@@ -96,9 +96,11 @@ namespace SelDeM
         {
             if (enterPressed != true)
             {
+                //make arrow rect y position according to line spacing, see dialogbox for example
                 int camerapositionX = (int)Game1.camHand.Camera.Pos.X;
                 int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
-                textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .04) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
+                textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .05) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
+                arrowRect[2].X = (int)textPos.X - (int)(boxRect.Width * .02);
                 spriteBatch.Draw(boxTexture, new Rectangle(boxRect.X + camerapositionX, boxRect.Y + camerapositionY, boxRect.Width, boxRect.Height), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, .95f);
                 //Arrow blinking
                 if (gameTime.TotalGameTime.Seconds % 2 == 0)
@@ -108,7 +110,7 @@ namespace SelDeM
                 //Choice text
                 for(int x = 0; x < confirm.Length; x++)
                 {
-                    spriteBatch.DrawString(font, confirm[x], new Vector2(textPos.X, textPos.Y + (x * arrowRect[0].Height/2)), Color.Black,0f,Vector2.Zero, 1, SpriteEffects.None,1f);
+                    spriteBatch.DrawString(font, confirm[x], new Vector2(textPos.X, textPos.Y + (x * arrowRect[0].Height/2)), Color.White,0f,Vector2.Zero, 1, SpriteEffects.None,1f);
                 }
                 
             }

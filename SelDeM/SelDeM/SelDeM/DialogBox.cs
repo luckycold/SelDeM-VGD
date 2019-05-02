@@ -29,7 +29,6 @@ namespace SelDeM
         private bool isDoneDrawing;
         private List<string> choices;
         private bool enterPressed;
-        private Vector2 rectangleStartingPosition;
 
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
         {
@@ -59,12 +58,11 @@ namespace SelDeM
                 typedAlready[i] = false;
             index = 0;
             //delay in between each letter
-            delay = 5;
+            delay = 1;
             isDoneDrawing = false;
             typedTextLength = 0;
             this.choices = choices;
             enterPressed = false;
-            rectangleStartingPosition = new Vector2(dialogBoxRect.X, dialogBoxRect.Y);
         }
 
         public string[] formatIntoChunks()
