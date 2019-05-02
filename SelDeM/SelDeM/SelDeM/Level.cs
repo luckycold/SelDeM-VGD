@@ -46,9 +46,12 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             isDialogVisable = false;
-            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet", new List<string>{ "1 perry perry", "2 perry perry" }));
+            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet", new List<string>{ "1 perry perry", "2 perry perry", "3 perry perry", "4 perry perry" }));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string>()));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
+            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 3", new List<string>()));
+            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 4", new List<string>()));
+            dT[0].AddChild(new DialogBox(spriteBatch, content, graphics, "pepe", new List<string>()));
             curTreeLoc = dT;
             isChoiceVisable = false;
             choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices, graphics);
@@ -121,7 +124,15 @@ namespace SelDeM
             }
             if (isChoiceVisable)
             {
-                choiceMaker.Update(kb, oldkb);
+                timer--;
+                if (timer <= 0)
+                {
+                    timer = 5;
+                    oldkb = kb;
+                    kb = Keyboard.GetState();
+                    choiceMaker.Update(kb, oldkb);
+                }
+                
                 if (choiceMaker.choiceChosen!=-1)
                 {
                     curTreeLoc = curTreeLoc.Children[choiceMaker.choiceChosen];
@@ -130,7 +141,6 @@ namespace SelDeM
                 player.CanWalk = false;
             }
             playerBoundaryCheck();
-
         }
 
         private void playerBoundaryCheck()
