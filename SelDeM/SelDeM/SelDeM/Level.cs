@@ -24,8 +24,8 @@ namespace SelDeM
         DialogTree<DialogBox> dT, curTreeLoc;
         static DialogueChoices choiceMaker;
         ContentManager content;
-        bool isChoiceVisable, timerStart;
-        int timer;
+        bool isChoiceVisable, nextframe;
+        int count;
 
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
@@ -50,12 +50,18 @@ namespace SelDeM
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string> { "1 perry perry"}));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
             dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 3", new List<string>()));
-            dT[0].AddChild(new DialogBox(spriteBatch, content, graphics, "fdsaklf", new List<string>()));
+            dT[0].AddChild(new DialogBox(spriteBatch, content, graphics, "fdsaklf", new List<string> { "1 perry perry", "2 perry perry" , "3 perry perry"}));
+            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "fdsjakefdsge", new List<string> { "1 perry perry", "2 perry perry", "3 perry perry" }));
+            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "abcdef", new List<string>()));
+            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "abcfdsafefdaefdef", new List<string>()));
+            dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "one", new List<string>()));
+            dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "two", new List<string>()));
+            dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "three", new List<string>()));
             curTreeLoc = dT;
             isChoiceVisable = false;
             choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices, graphics);
-            timer = 10;
-            timerStart = false;
+            nextframe = false;
+            count = 0;
         }
 
         public Tile[,] Tiles
@@ -97,46 +103,41 @@ namespace SelDeM
                     if (curTreeLoc.Value.hasChoices())
                     {
                         choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices, Game1.graphics);
-                        timerStart = true;
+                        isDialogVisable = false;
+                        isChoiceVisable = true;
                     }
                     else
                     {
+                        choiceMaker = null;
                         isDialogVisable = false;
                         isChoiceVisable = false;
                         player.CanWalk = true;
                     }
                 }
             }
-            if (timerStart)
-            {
-                if (!kb.IsKeyDown(Keys.Enter))
-                    timer--;
-                if (timer <= 0)
-                {
-                    timerStart = false;
-                    isChoiceVisable = true;
-                    timer = 10;
-                    oldkb = kb;
-                    kb = Keyboard.GetState();
-                    isDialogVisable = false;
-                }
-            }
             if (isChoiceVisable)
             {
-                timer--;
-                if (timer <= 0)
+                if (nextframe)
                 {
-                    timer = 10;
-                    oldkb = kb;
-                    kb = Keyboard.GetState();
                     choiceMaker.Update(kb, oldkb);
+                    if (choiceMaker.choiceChosen != -1)
+                    {
+                        if (curTreeLoc.Children.Count > 0)
+                            curTreeLoc = curTreeLoc[choiceMaker.choiceChosen];
+                        Console.WriteLine("chosen");
+                        isChoiceVisable = false;
+                        isDialogVisable = true;
+                        nextframe = false;
+                    }
                 }
-                if (choiceMaker.choiceChosen!=-1)
+                else
                 {
-                    if (curTreeLoc.Children.Count>0)
-                        curTreeLoc = curTreeLoc[choiceMaker.choiceChosen];
-                    Console.WriteLine("chosen");
-                    isChoiceVisable = false;
+                    count++;
+                    if (count == 15)
+                    {
+                        nextframe = !nextframe;
+                        count = 0;
+                    }
                 }
                 player.CanWalk = false;
             }

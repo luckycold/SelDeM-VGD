@@ -18,7 +18,6 @@ namespace SelDeM
         bool enterPressed;
         StreamReader reader;
         SpriteFont font;
-        KeyboardState oldKB;
         Rectangle[] arrowRect;
         Texture2D arrowTexture, boxTexture;
         Rectangle boxRect;
@@ -29,7 +28,6 @@ namespace SelDeM
 
         public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, List<String> choices, GraphicsDeviceManager graphics) //show these choices from list, and then return the int of choice chosen
         {
-            oldKB = Keyboard.GetState();
             maxChoice = choices.Count;
             confirm = new String[choices.Count];
             enterPressed = false;
@@ -47,7 +45,7 @@ namespace SelDeM
             arrowRect = new Rectangle[3];
             arrowRect[0] = new Rectangle((int)textPos.X, 0, 20, 32);
             arrowRect[1] = new Rectangle((int)textPos.X, 32, 20, 32);
-            arrowRect[2] = new Rectangle((int)textPos.X + 50, 720, arrowRect[0].Width, arrowRect[0].Height);
+            arrowRect[2] = new Rectangle((int)textPos.X + 50, 720+(int)textPos.Y, arrowRect[0].Width, arrowRect[0].Height);
             //textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
 
             font = contentManager.Load<SpriteFont>("DialogChoiceFont");
@@ -68,7 +66,7 @@ namespace SelDeM
 
         public void Update(KeyboardState kb, KeyboardState oldkb)
         {
-            if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up) && !enterPressed)
+            if (kb.IsKeyDown(Keys.Up) && !oldkb.IsKeyDown(Keys.Up) && !enterPressed)
             {
                 if (choice > 0)
                 {
@@ -77,7 +75,7 @@ namespace SelDeM
                 }
             }
 
-            if (kb.IsKeyDown(Keys.Down) && !oldKB.IsKeyDown(Keys.Down) && !enterPressed)
+            if (kb.IsKeyDown(Keys.Down) && !oldkb.IsKeyDown(Keys.Down) && !enterPressed)
             {
                 if (choice < maxChoice - 1)
                 {
@@ -90,6 +88,7 @@ namespace SelDeM
             {
                 enterPressed = true;
             }
+            Console.WriteLine(choice);
         }
 
         public void Draw(GameTime gameTime)
