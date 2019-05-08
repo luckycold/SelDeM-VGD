@@ -63,7 +63,6 @@ namespace SelDeM
             typedTextLength = 0;
             this.choices = new List<string>();
             enterPressed = false;
-            rectangleStartingPosition = new Vector2(dialogBoxRect.X, dialogBoxRect.Y);
         }
         public DialogBox(SpriteBatch spriteBatch, ContentManager Content, GraphicsDeviceManager graphics, string text, List<string> choices)
         {
