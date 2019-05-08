@@ -26,6 +26,8 @@ namespace SelDeM
         ContentManager content;
         bool isChoiceVisable, nextframe;
         int count;
+        bool isChoiceVisable;
+        public static DialogueTreeBuilder dTB;
 
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
@@ -57,6 +59,8 @@ namespace SelDeM
             dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "one", new List<string>()));
             dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "two", new List<string>()));
             dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "three", new List<string>()));
+            dTB = new DialogueTreeBuilder(spriteBatch, content, graphics);
+            dT = dTB.BuildTreeFromFile(@"Content\\Dialog.txt");
             curTreeLoc = dT;
             isChoiceVisable = false;
             choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices, graphics);

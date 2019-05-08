@@ -12,35 +12,93 @@ using System.IO;
 
 namespace SelDeM
 {
-    class DialogueTreeBuilder
+    public class DialogueTreeBuilder
     {
-        SpriteBatch spriteBatch;
-        ContentManager content;
-        GraphicsDeviceManager graphics;
-        string[] text;
-        DialogTree<DialogBox> tree;
-        DialogBox[] children;
-        SpriteFont font;
+        SpriteBatch sb;
+        ContentManager cM;
+        GraphicsDeviceManager g;
+        int cL = 0;
 
-        public DialogueTreeBuilder(SpriteBatch spriteBatch, ContentManager content, GraphicsDeviceManager graphics, string path)
+        public DialogueTreeBuilder(SpriteBatch spriteBatch, ContentManager contentManager, GraphicsDeviceManager graphics)
         {
-            this.spriteBatch = spriteBatch;
-            this.content = content;
-            this.graphics = graphics;
-
-            font = content.Load<SpriteFont>("DialogChoiceFont");
-            StreamReader reader = new StreamReader(path);
-            int length = 0;
-            text = new string[length];
-
-
-
+            sb = spriteBatch;
+            cM = contentManager;
+            g = graphics;
         }
 
-        public DialogTree<DialogBox> getDialogBox(int i) //The way to use this is to first have an object of DialogueTreeBuilder, then: [objectName].getDialogBox([nodeNumber]).[DialogBoxMethods];
+        internal DialogTree<DialogBox> BuildTreeFromFile(string path)
         {
-            return tree[i];
+            StreamReader read = new StreamReader(path);
+            List<string> dialogue = new List<string>();
+            List<string> choices = new List<string>();
+            int numOfChoices = 0;
+            cL = 0;
+            while (!read.EndOfStream)
+            {
+                string line = read.ReadLine();
+                if(!line.Contains("*//"))
+                    dialogue.Add(line);
+            }
+            List<string> initdB = new List<string>();
+            foreach(string line in dialogue)
+            {
+                initdB.Add(line);
+                if (line.Contains("*+"))
+                {
+                    numOfChoices = Convert.ToInt32(line.Substring(3));
+                    break;
+                }
+            }
+            foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
+                choices.Add(s);
+            initdB.RemoveAt(initdB.Count-1);
+            string dT = "";
+            foreach (string s in initdB)
+                dT += "\n" + s;
+            DialogTree<DialogBox> temp = new DialogTree<DialogBox>(new DialogBox(sb, cM, g, dT, choices));
+            for(int x = 0; x < numOfChoices; x++)
+            {
+                temp = BuildTree(dialogue, temp);
+            }
+            return temp;
         }
 
+        private DialogTree<DialogBox> BuildTree(List<string> dialogue, DialogTree<DialogBox> parent)
+        {
+            string dFB = "";
+            DialogTree<DialogBox> tree = parent;
+            if (cL < dialogue.Count && !dialogue[cL].Contains("*+ "))
+            {
+                List<string> initdB = new List<string>();
+                List<string> choices = new List<string>();
+                while (!dialogue[cL].Contains("*+ "))
+                {
+                    dFB += dialogue[cL];
+                    initdB.Add(dialogue[cL]);
+                    cL++;
+                }
+                int numOfChoices = Convert.ToInt32(dialogue[cL].Substring(3));
+                 if (numOfChoices > 1)
+                {
+                    foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
+                        choices.Add(s);
+                    initdB.RemoveAt(initdB.Count - 1);
+                }
+                if (choices.Count == 0)
+                    choices = null;
+                string dT = "";
+                foreach (string s in initdB)
+                    dT += "\n" + s;
+                tree.AddChild(new DialogBox(sb, cM, g, dFB, choices));
+                for (int curChoice = 0; curChoice < numOfChoices; curChoice++)
+                {
+                    if(numOfChoices < parent.Children.Count-1)
+                        tree = BuildTree(dialogue, parent.Children[curChoice]);
+                }
+            }
+            else
+                cL++;
+            return tree;
+        }
     }
 }
