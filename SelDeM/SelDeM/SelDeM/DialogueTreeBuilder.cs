@@ -17,7 +17,7 @@ namespace SelDeM
         SpriteBatch sb;
         ContentManager cM;
         GraphicsDeviceManager g;
-        static int cL = 0;
+        int cL = 0;
 
         public DialogueTreeBuilder(SpriteBatch spriteBatch, ContentManager contentManager, GraphicsDeviceManager graphics)
         {
@@ -26,15 +26,18 @@ namespace SelDeM
             g = graphics;
         }
 
-        DialogTree<DialogBox> BuildTreeFromFile(string path)
+        internal DialogTree<DialogBox> BuildTreeFromFile(string path)
         {
             StreamReader read = new StreamReader(path);
             List<string> dialogue = new List<string>();
             List<string> choices = new List<string>();
             int numOfChoices = 0;
+            cL = 0;
             while (!read.EndOfStream)
             {
-                dialogue.Add(read.ReadLine());
+                string line = read.ReadLine();
+                if(!line.Contains("*//"))
+                    dialogue.Add(line);
             }
             List<string> initdB = new List<string>();
             foreach(string line in dialogue)
@@ -55,29 +58,47 @@ namespace SelDeM
             DialogTree<DialogBox> temp = new DialogTree<DialogBox>(new DialogBox(sb, cM, g, dT, choices));
             for(int x = 0; x < numOfChoices; x++)
             {
-                temp=BuildTree(dialogue, ref temp);
+                temp = BuildTree(dialogue, temp);
             }
             return temp;
         }
 
-        DialogTree<DialogBox> BuildTree(List<string> dialogue,ref DialogTree<DialogBox> parent)
+        private DialogTree<DialogBox> BuildTree(List<string> dialogue, DialogTree<DialogBox> parent)
         {
-            throw new NotImplementedException();
             string dFB = "";
-
-            while(!dialogue[cL].Contains("*+ "))
+            DialogTree<DialogBox> tree = parent;
+            if (cL < dialogue.Count && !dialogue[cL].Contains("*+ "))
             {
-                dFB += dialogue[cL];
-                cL++;
+                List<string> initdB = new List<string>();
+                List<string> choices = new List<string>();
+                while (!dialogue[cL].Contains("*+ "))
+                {
+                    dFB += dialogue[cL];
+                    initdB.Add(dialogue[cL]);
+                    cL++;
+                }
+                int numOfChoices = Convert.ToInt32(dialogue[cL].Substring(3));
+                 if (numOfChoices > 1)
+                {
+                    foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
+                        choices.Add(s);
+                    initdB.RemoveAt(initdB.Count - 1);
+                }
+                if (choices.Count == 0)
+                    choices = null;
+                string dT = "";
+                foreach (string s in initdB)
+                    dT += "\n" + s;
+                tree.AddChild(new DialogBox(sb, cM, g, dFB, choices));
+                for (int curChoice = 0; curChoice < numOfChoices; curChoice++)
+                {
+                    if(numOfChoices < parent.Children.Count-1)
+                        tree = BuildTree(dialogue, parent.Children[curChoice]);
+                }
             }
-            int numOfChoices = Convert.ToInt32(dialogue[cL].Substring(3));
-            for (int curChoice = 0; curChoice < numOfChoices; curChoice++)
-            {
+            else
                 cL++;
-                parent.AddChild(new DialogBox(sb, cM, g, dFB));
-                //Can't create a reference to a indexer aka list.count
-                BuildTree(dialogue, ref parent[curChoice]);
-            }
+            return tree;
         }
     }
 }

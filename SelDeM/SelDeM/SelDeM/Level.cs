@@ -25,6 +25,7 @@ namespace SelDeM
         static DialogueChoices choiceMaker;
         ContentManager content;
         bool isChoiceVisable;
+        public static DialogueTreeBuilder dTB;
 
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
@@ -45,9 +46,8 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             isDialogVisable = false;
-            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet", new List<string>{ "1 perry perry", "2 perry perry" }));
-            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string>()));
-            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
+            dTB = new DialogueTreeBuilder(spriteBatch, content, graphics);
+            dT = dTB.BuildTreeFromFile(@"Content\\Dialog.txt");
             curTreeLoc = dT;
         }
 
