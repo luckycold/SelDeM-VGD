@@ -1,0 +1,11 @@
+﻿This is the first line of the main parent. This is the second line the main parent. This is to test what happens when a sentence moves down due to an indent.
+*{aasdf,asdf
+*+ 2
+The first choice that leads to the left child
+*+ 2
+The first child of main parent’s child.
+*+ 0
+The second child of main parent’s child.
+*+ 0
+The second choice that leads to the right child
+*+ 0

@@ -31,6 +31,10 @@ namespace SelDeM
             get { return _children[i]; }
         }
         
+        public DialogTree<T> getChildReference(int num)
+        {
+            return _children[num];
+        }
 
         public DialogTree<T> Parent { get; private set; }
 
