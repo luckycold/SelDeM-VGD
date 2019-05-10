@@ -42,19 +42,20 @@ namespace SelDeM
             List<string> initdB = new List<string>();
             foreach(string line in dialogue)
             {
-                initdB.Add(line);
                 if (line.Contains("*+"))
                 {
                     numOfChoices = Convert.ToInt32(line.Substring(3));
                     break;
                 }
+                initdB.Add(line);
             }
+            Console.WriteLine(initdB[initdB.Count - 1]);
             foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
                 choices.Add(s);
             initdB.RemoveAt(initdB.Count-1);
             string dT = "";
             foreach (string s in initdB)
-                dT += "\n" + s;
+                dT += s +"\n";
             DialogTree<DialogBox> temp = new DialogTree<DialogBox>(new DialogBox(sb, cM, g, dT, choices));
             for(int x = 0; x < numOfChoices; x++)
             {
