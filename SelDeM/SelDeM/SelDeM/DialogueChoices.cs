@@ -18,7 +18,6 @@ namespace SelDeM
         bool enterPressed;
         StreamReader reader;
         SpriteFont font;
-        KeyboardState oldKB;
         Rectangle[] arrowRect;
         Texture2D arrowTexture, boxTexture;
         Rectangle boxRect;
@@ -29,7 +28,6 @@ namespace SelDeM
 
         public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, List<String> choices, GraphicsDeviceManager graphics) //show these choices from list, and then return the int of choice chosen
         {
-            oldKB = Keyboard.GetState();
             maxChoice = choices.Count;
             confirm = new String[choices.Count];
             enterPressed = false;
@@ -41,14 +39,14 @@ namespace SelDeM
             arrowTexture = contentManager.Load<Texture2D>("ChoiceArrow");
 
             //these vectors will change the location of both the text and the arrow image
-            arrowRect = new Rectangle[3];
-            arrowRect[0] = new Rectangle(0, 0, 20, 32);
-            arrowRect[1] = new Rectangle(0, 32, 20, 32);
-            arrowRect[2] = new Rectangle(50, 800, arrowRect[0].Width, arrowRect[0].Height);
-            //textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
             int camerapositionX = (int)Game1.camHand.Camera.Pos.X;
             int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
             textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .04) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
+            arrowRect = new Rectangle[3];
+            arrowRect[0] = new Rectangle((int)textPos.X, 0, 20, 32);
+            arrowRect[1] = new Rectangle((int)textPos.X, 32, 20, 32);
+            arrowRect[2] = new Rectangle((int)textPos.X + 50, 720+(int)textPos.Y, arrowRect[0].Width, arrowRect[0].Height);
+            //textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
 
             font = contentManager.Load<SpriteFont>("DialogChoiceFont");
 
@@ -68,21 +66,21 @@ namespace SelDeM
 
         public void Update(KeyboardState kb, KeyboardState oldkb)
         {
-            if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up) && !enterPressed)
+            if (kb.IsKeyDown(Keys.Up) && !oldkb.IsKeyDown(Keys.Up) && !enterPressed)
             {
                 if (choice > 0)
                 {
                     choice--;
-                    arrowRect[2].Y -= arrowRect[2].Height/2;
+                    arrowRect[2].Y -= arrowRect[2].Height;
                 }
             }
 
-            if (kb.IsKeyDown(Keys.Down) && !oldKB.IsKeyDown(Keys.Down) && !enterPressed)
+            if (kb.IsKeyDown(Keys.Down) && !oldkb.IsKeyDown(Keys.Down) && !enterPressed)
             {
-                if (choice < maxChoice)
+                if (choice < maxChoice - 1)
                 {
                     choice++;
-                    arrowRect[2].Y += arrowRect[2].Height / 2;
+                    arrowRect[2].Y += arrowRect[2].Height;
                 }
 
             }
@@ -90,15 +88,18 @@ namespace SelDeM
             {
                 enterPressed = true;
             }
+            Console.WriteLine(choice);
         }
 
         public void Draw(GameTime gameTime)
         {
             if (enterPressed != true)
             {
+                //make arrow rect y position according to line spacing, see dialogbox for example
                 int camerapositionX = (int)Game1.camHand.Camera.Pos.X;
                 int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
-                textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .04) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
+                textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .05) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
+                arrowRect[2].X = (int)textPos.X - (int)(boxRect.Width * .02);
                 spriteBatch.Draw(boxTexture, new Rectangle(boxRect.X + camerapositionX, boxRect.Y + camerapositionY, boxRect.Width, boxRect.Height), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, .95f);
                 //Arrow blinking
                 if (gameTime.TotalGameTime.Seconds % 2 == 0)
@@ -108,7 +109,7 @@ namespace SelDeM
                 //Choice text
                 for(int x = 0; x < confirm.Length; x++)
                 {
-                    spriteBatch.DrawString(font, confirm[x], new Vector2(textPos.X, textPos.Y + (x * arrowRect[0].Height/2)), Color.Black,0f,Vector2.Zero, 1, SpriteEffects.None,1f);
+                    spriteBatch.DrawString(font, confirm[x], new Vector2(textPos.X, textPos.Y + (x * arrowRect[0].Height)), Color.White,0f,Vector2.Zero, 1, SpriteEffects.None,1f);
                 }
                 
             }
@@ -122,7 +123,7 @@ namespace SelDeM
                     return choice;
                 return -1;
             }
-
         }
+
     }
 }

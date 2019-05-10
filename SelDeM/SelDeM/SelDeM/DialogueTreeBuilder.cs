@@ -49,8 +49,7 @@ namespace SelDeM
                 }
                 initdB.Add(line);
             }
-            Console.WriteLine(initdB[initdB.Count - 1]);
-            foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
+            foreach (string s in initdB[initdB.Count - 2].Substring(2).Split(','))
                 choices.Add(s);
             initdB.RemoveAt(initdB.Count-1);
             string dT = "";
@@ -86,7 +85,7 @@ namespace SelDeM
                     initdB.RemoveAt(initdB.Count - 1);
                 }
                 if (choices.Count == 0)
-                    choices = null;
+                    choices = new List<string>();
                 string dT = "";
                 foreach (string s in initdB)
                     dT += "\n" + s;
