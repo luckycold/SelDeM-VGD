@@ -17,7 +17,8 @@ namespace SelDeM
         SpriteBatch sb;
         ContentManager cM;
         GraphicsDeviceManager g;
-        int cL = 0;
+        static int cL = 0;
+        DialogTree<DialogBox> temp;
 
         public DialogueTreeBuilder(SpriteBatch spriteBatch, ContentManager contentManager, GraphicsDeviceManager graphics)
         {
@@ -42,63 +43,58 @@ namespace SelDeM
             List<string> initdB = new List<string>();
             foreach(string line in dialogue)
             {
+                cL++;
                 if (line.Contains("*+"))
                 {
                     numOfChoices = Convert.ToInt32(line.Substring(3));
                     break;
                 }
+                
                 initdB.Add(line);
             }
-            foreach (string s in initdB[initdB.Count - 2].Substring(2).Split(','))
+            
+            foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
                 choices.Add(s);
             initdB.RemoveAt(initdB.Count-1);
             string dT = "";
             foreach (string s in initdB)
                 dT += s +"\n";
-            DialogTree<DialogBox> temp = new DialogTree<DialogBox>(new DialogBox(sb, cM, g, dT, choices));
-            for(int x = 0; x < numOfChoices; x++)
-            {
-                temp = BuildTree(dialogue, temp);
-            }
+            temp = new DialogTree<DialogBox>(new DialogBox(sb, cM, g, dT, choices));
+            //for(int x = 0; x < numOfChoices; x++)
+           // {
+                string p = dialogue[cL];
+                temp = BuildTree(dialogue, choices.Count);
+           // }
             return temp;
         }
 
-        private DialogTree<DialogBox> BuildTree(List<string> dialogue, DialogTree<DialogBox> parent)
+        private DialogTree<DialogBox> BuildTree(List<string> dialogue, int numOfChoices)
         {
-            string dFB = "";
-            DialogTree<DialogBox> tree = parent;
-            if (cL < dialogue.Count && !dialogue[cL].Contains("*+ "))
+            int numOfChoiceTemp = 0;
+            List<string> initdB = new List<string>();
+            List<string> choices = new List<string>();
+            for (int loc = 0; loc < numOfChoices; loc++)
             {
-                List<string> initdB = new List<string>();
-                List<string> choices = new List<string>();
-                while (!dialogue[cL].Contains("*+ "))
+                foreach (string line in dialogue)
                 {
-                    dFB += dialogue[cL];
-                    initdB.Add(dialogue[cL]);
                     cL++;
+                    if (line.Contains("*+"))
+                    {
+                        numOfChoiceTemp = Convert.ToInt32(line.Substring(3));
+                        break;
+                    }
+
+                    initdB.Add(line);
                 }
-                int numOfChoices = Convert.ToInt32(dialogue[cL].Substring(3));
-                 if (numOfChoices > 1)
-                {
-                    foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
-                        choices.Add(s);
-                    initdB.RemoveAt(initdB.Count - 1);
-                }
-                if (choices.Count == 0)
-                    choices = new List<string>();
-                string dT = "";
-                foreach (string s in initdB)
-                    dT += "\n" + s;
-                tree.AddChild(new DialogBox(sb, cM, g, dFB, choices));
-                for (int curChoice = 0; curChoice < numOfChoices; curChoice++)
-                {
-                    if(numOfChoices < parent.Children.Count-1)
-                        tree = BuildTree(dialogue, parent.Children[curChoice]);
-                }
+                foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
+                    choices.Add(s);
+                initdB.RemoveAt(initdB.Count - 1);
+                temp.AddChildNode(BuildTree(dialogue, 0));
             }
+            if (choices.Count > 0)
+                return new DialogTree<DialogBox>(new DialogBox(sb, cM, g, "", choices));
             else
-                cL++;
-            return tree;
+                return new DialogTree<DialogBox>(new DialogBox(sb, cM, g, ""));
         }
     }
 }

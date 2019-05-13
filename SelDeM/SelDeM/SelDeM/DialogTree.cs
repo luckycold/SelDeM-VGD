@@ -63,5 +63,10 @@ namespace SelDeM
             foreach (var child in _children)
                 child.Traverse(action);
         }
+
+        internal void AddChildNode(DialogTree<T> tree)
+        {
+            _children.Add(tree);
+        }
     }
 }
