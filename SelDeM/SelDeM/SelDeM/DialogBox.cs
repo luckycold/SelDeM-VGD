@@ -244,6 +244,8 @@ namespace SelDeM
             get { return enterPressed; }
         }
 
+ 
+
         public void lineUp()
         {
             if (index>0)
