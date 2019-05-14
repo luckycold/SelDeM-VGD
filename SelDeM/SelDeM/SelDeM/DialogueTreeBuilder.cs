@@ -42,14 +42,14 @@ namespace SelDeM
             List<string> initdB = new List<string>();
             foreach(string line in dialogue)
             {
-                initdB.Add(line);
+                initdB.Add(line); //initial DialogBox is the parent
                 if (line.Contains("*+"))
                 {
-                    numOfChoices = Convert.ToInt32(line.Substring(3));
+                    numOfChoices = Convert.ToInt32(line.Substring(3)); 
                     break;
                 }
             }
-            foreach (string s in initdB[initdB.Count - 1].Substring(2).Split(','))
+            foreach (string s in initdB[initdB.Count - 2].Substring(2).Split(','))
                 choices.Add(s);
             initdB.RemoveAt(initdB.Count-1);
             string dT = "";

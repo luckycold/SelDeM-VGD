@@ -26,7 +26,6 @@ namespace SelDeM
         ContentManager content;
         bool isChoiceVisable, nextframe;
         int count;
-        bool isChoiceVisable;
         public static DialogueTreeBuilder dTB;
 
 
@@ -48,19 +47,30 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             isDialogVisable = false;
-            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet", new List<string>{ "1 perry perry", "2 perry perry", "3 perry perry" }));
-            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string> { "1 perry perry"}));
-            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
-            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 3", new List<string>()));
-            dT[0].AddChild(new DialogBox(spriteBatch, content, graphics, "fdsaklf", new List<string> { "1 perry perry", "2 perry perry" , "3 perry perry"}));
-            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "fdsjakefdsge", new List<string> { "1 perry perry", "2 perry perry", "3 perry perry" }));
-            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "abcdef", new List<string>()));
-            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "abcfdsafefdaefdef", new List<string>()));
-            dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "one", new List<string>()));
-            dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "two", new List<string>()));
-            dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "three", new List<string>()));
-            dTB = new DialogueTreeBuilder(spriteBatch, content, graphics);
-            dT = dTB.BuildTreeFromFile(@"Content\\Dialog.txt");
+            //dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet", new List<string>{ "1 perry perry", "2 perry perry", "3 perry perry" }));
+            //dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 1", new List<string> { "1 perry perry"}));
+            //dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 2", new List<string>()));
+            //dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Choice 3", new List<string>()));
+            //dT[0].AddChild(new DialogBox(spriteBatch, content, graphics, "fdsaklf", new List<string> { "1 perry perry", "2 perry perry" , "3 perry perry"}));
+            //dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "fdsjakefdsge", new List<string> { "1 perry perry", "2 perry perry", "3 perry perry" }));
+            //dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "abcdef", new List<string>()));
+            //dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "abcfdsafefdaefdef", new List<string>()));
+            //dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "one", new List<string>()));
+            //dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "two", new List<string>()));
+            //dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "three", new List<string>()));
+            dT = new DialogTree<DialogBox>(new DialogBox(spriteBatch, content, graphics, "Hi!", new List<string> { "Greet back"}));
+            dT.AddChild(new DialogBox(spriteBatch, content, graphics, "Hello.", new List<string> { "Let him introduce himself" }));
+            dT[0].AddChild(new DialogBox(spriteBatch, content, graphics, "My name is Pete Hamburg. I am a high school student at Allen High School.", new List<string> { "Go to school", "Skip and eat breakfast", "Keep sleeping" }));
+            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "Wow, school is as boring as usual. I wish someone would come and bully me... *Bully walks up to character and pushes character down*", new List<string> { "Fight the bully", "Get bullied" }));
+            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "MMM, breakfast", new List<string> { "Eat food" ,"Throw away food" }));
+            dT[0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "Keep sleeping", new List<string> { "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" }));
+            dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "Punches, kicks, somersaults into a hind kick, and lastly fatal blow.", new List<string> { }));
+            dT[0][0][0].AddChild(new DialogBox(spriteBatch, content, graphics, "Oh no, I'm getting bullied. Ow, ouch, oof, yikes.", new List<string> { }));
+            dT[0][0][1].AddChild(new DialogBox(spriteBatch, content, graphics, "Stomach capacity = 100%", new List<string> { }));
+            dT[0][0][1].AddChild(new DialogBox(spriteBatch, content, graphics, "Nevermind, I guess this doesn't look that great. Better throw it away!", new List<string> { }));
+            dT[0][0][2].AddChild(new DialogBox(spriteBatch, content, graphics, "Zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\nzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...", new List<string> { }));
+            //dTB = new DialogueTreeBuilder(spriteBatch, content, graphics);
+            //dT = dTB.BuildTreeFromFile(@"Content\\Dialog.txt");
             curTreeLoc = dT;
             isChoiceVisable = false;
             choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices, graphics);
@@ -113,6 +123,8 @@ namespace SelDeM
                     else
                     {
                         choiceMaker = null;
+                        curTreeLoc = dT;
+                        choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices,Game1.graphics);
                         isDialogVisable = false;
                         isChoiceVisable = false;
                         player.CanWalk = true;
