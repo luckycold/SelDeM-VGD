@@ -22,6 +22,7 @@ namespace SelDeM
         String controlText;
         Vector2 textPosition;
         GraphicsDeviceManager graphics;
+        bool isShowing;
 
         public StartScreen(SpriteBatch spriteBatch, ContentManager contentManager, GraphicsDeviceManager graphics)
         {
@@ -39,15 +40,31 @@ namespace SelDeM
             textPosition = new Vector2(controlPosition.Left, controlPosition.Bottom);
 
             font = contentManager.Load<SpriteFont>("StartScreenFont");
+            isShowing = true;
+        }
+
+        public void Update(GameTime gameTime, KeyboardState kb, KeyboardState oldkb)
+        {
+            if (isShowing)
+            {
+                if (kb.IsKeyDown(Keys.Enter)&& !oldkb.IsKeyDown(Keys.Enter))
+                {
+                    isShowing = false;
+                }
+            }
+        }
+
+        public bool Showing
+        {
+            get { return isShowing; }
+            set { isShowing = value; }
         }
 
         public void Draw()
         {
-            spriteBatch.Begin();
             spriteBatch.Draw(controlTexture, controlPosition, Color.White);
             spriteBatch.Draw(logoTexture, logoPosition, Color.White);
             spriteBatch.DrawString(font, controlText, textPosition, Color.Black);
-            spriteBatch.End();
         }
     }
 }
