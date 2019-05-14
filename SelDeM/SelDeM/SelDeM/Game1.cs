@@ -18,15 +18,15 @@ namespace SelDeM
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         private const int spriteSize = 64;
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Level curLevel;
         static Player player;
         KeyboardState oldkb, kb;
         public static CameraHandler camHand;
         MouseState oldms, ms;
-        Texture2D test;
-        
+        StartScreen s;
+
 
         public Game1()
         {
@@ -63,12 +63,13 @@ namespace SelDeM
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
+            camHand = new CameraHandler(GraphicsDevice, new Vector2(64, 32), 2, 1, player.Speed);
             curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
-            camHand = new CameraHandler(GraphicsDevice,new Vector2(64,32),2,1,player.Speed);
-            curLevel.setTile(0, 0, new Tile(new Rectangle(0, 0, 64, 64), "dialog"));
-            curLevel.setTile(5, 5, new Tile(new Rectangle(64 * 5, 64 * 5, 64, 64), "unwalkable"));
-            curLevel.setTile(3, 3, new Tile(new Rectangle(64 * 3, 64 * 3, 64, 64), "unwalkable"));
-            test = this.Content.Load<Texture2D>("Hero");
+            curLevel.setTile(0, 0, new Tile(new Rectangle(0*3, 0*3, 64, 64), "dialog"));
+            s = new StartScreen(spriteBatch, this.Content, graphics);
+
+
+
         }
 
         /// <summary>
@@ -94,9 +95,11 @@ namespace SelDeM
             kb = Keyboard.GetState();
             ms = Mouse.GetState();
             // TODO: Add your update logic here
-            curLevel.Update(gameTime);
-            player.Update(kb, oldkb, ms, oldms);
             camHand.Update(player.Rectangle);
+            curLevel.Update(gameTime, kb, oldkb);
+            player.Update(kb, oldkb, ms, oldms);
+            if (s.Showing)
+                s.Update(gameTime, kb, oldkb);
             oldkb = kb;
             oldms = ms;
             base.Update(gameTime);
@@ -108,16 +111,17 @@ namespace SelDeM
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
             
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
-            player.Draw();
-            spriteBatch.Draw(test, curLevel.Tiles[3, 3].Rectangle, Color.Blue);
-            spriteBatch.Draw(test, curLevel.Tiles[5, 5].Rectangle, Color.Green);
-            curLevel.Draw();
-            
-            
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, camHand.Camera.get_transformation(GraphicsDevice));
+            if (s.Showing)
+                s.Draw();
+            else
+            {
+                player.Draw();
+                curLevel.Draw(gameTime);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

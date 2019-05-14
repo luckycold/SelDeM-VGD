@@ -15,74 +15,115 @@ namespace SelDeM
     class DialogueChoices
     {
         String[] confirm;
-        bool choice;
+        bool enterPressed;
         StreamReader reader;
         SpriteFont font;
-        KeyboardState oldKB;
         Rectangle[] arrowRect;
-        Texture2D arrowTexture;
+        Texture2D arrowTexture, boxTexture;
+        Rectangle boxRect;
         SpriteBatch spriteBatch;
         Vector2 vector0, vector1;
-        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager,String path)
-        {
-            oldKB = Keyboard.GetState();
+        int maxChoice, choice;
+        Vector2 textPos;
 
-            confirm = new String[2];
-            readChoices(path);
-            choice = false; //Choice1 is true, Choice2 is false
+        public DialogueChoices(SpriteBatch spriteBatch, ContentManager contentManager, List<String> choices, GraphicsDeviceManager graphics) //show these choices from list, and then return the int of choice chosen
+        {
+            maxChoice = choices.Count;
+            confirm = new String[choices.Count];
+            enterPressed = false;
+            choice = 0;
+            readChoices(choices);
+
 
             this.spriteBatch = spriteBatch;
             arrowTexture = contentManager.Load<Texture2D>("ChoiceArrow");
 
             //these vectors will change the location of both the text and the arrow image
-            vector0 = new Vector2(50, 400); 
-            vector1 = new Vector2(50, 420);
+            int camerapositionX = (int)Game1.camHand.Camera.Pos.X;
+            int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
+            textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .04) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
             arrowRect = new Rectangle[3];
-            arrowRect[0] = new Rectangle(0, 0, 20, 32);
-            arrowRect[1] = new Rectangle(0, 32, 20, 32);
-            arrowRect[2] = new Rectangle((int)vector1.X- arrowRect[0].Width, (int)vector1.Y, arrowRect[0].Width, arrowRect[0].Height);
+            arrowRect[0] = new Rectangle((int)textPos.X, 0, 20, 32);
+            arrowRect[1] = new Rectangle((int)textPos.X, 32, 20, 32);
+            arrowRect[2] = new Rectangle((int)textPos.X + 50, 720+(int)textPos.Y, arrowRect[0].Width, arrowRect[0].Height);
+            //textPos = new Vector2(arrowRect[2].X + arrowRect[2].Width, arrowRect[2].Y-arrowRect[2].Height/2);
+
             font = contentManager.Load<SpriteFont>("DialogChoiceFont");
+
+            int width = graphics.PreferredBackBufferWidth - 100;
+            int height = graphics.PreferredBackBufferHeight / 5;
+            boxRect = new Rectangle(50, graphics.PreferredBackBufferHeight - height - 25, width, height);
+            boxTexture = contentManager.Load<Texture2D>("txtbox");
         }
 
-        private void readChoices(String path)
+        private void readChoices(List<String> choices)
         {
-            reader = new StreamReader(path);
-            confirm[0] = reader.ReadLine();
-            confirm[1] = reader.ReadLine();
+            for(int x = 0; x < choices.Count; x++)
+            {
+                confirm[x] = choices[x];
+            }
         }
 
-        public void Input()
+        public void Update(KeyboardState kb, KeyboardState oldkb)
         {
-            KeyboardState kb = Keyboard.GetState();
-            if (kb.IsKeyDown(Keys.Up) && !oldKB.IsKeyDown(Keys.Up))
+            if (kb.IsKeyDown(Keys.Up) && !oldkb.IsKeyDown(Keys.Up) && !enterPressed)
             {
-                choice = true;
-                arrowRect[2].Y = (int)vector0.Y;
+                if (choice > 0)
+                {
+                    choice--;
+                    arrowRect[2].Y -= arrowRect[2].Height;
+                }
             }
 
-            if (kb.IsKeyDown(Keys.Down) && !oldKB.IsKeyDown(Keys.Down))
+            if (kb.IsKeyDown(Keys.Down) && !oldkb.IsKeyDown(Keys.Down) && !enterPressed)
             {
-                choice = false;
-                arrowRect[2].Y = (int)vector1.Y;
+                if (choice < maxChoice - 1)
+                {
+                    choice++;
+                    arrowRect[2].Y += arrowRect[2].Height;
+                }
+
             }
-            kb = oldKB;
+            if (kb.IsKeyDown(Keys.Enter))
+            {
+                enterPressed = true;
+            }
+            Console.WriteLine(choice);
         }
 
         public void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
-            //Arrow blinking
-            if (gameTime.TotalGameTime.Seconds % 2 == 0)
-                spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White);
-            else
-                spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[1], Color.White);
-            //Choice text
-            spriteBatch.DrawString(font, confirm[0], vector0, Color.White);
-            spriteBatch.DrawString(font, confirm[1], vector1, Color.White);
-
-            //spriteBatch.DrawString(font, "" + choice, new Vector2(50, 50), Color.White); //to test true or false of choice
-
-            spriteBatch.End();
+            if (enterPressed != true)
+            {
+                //make arrow rect y position according to line spacing, see dialogbox for example
+                int camerapositionX = (int)Game1.camHand.Camera.Pos.X;
+                int camerapositionY = (int)Game1.camHand.Camera.Pos.Y;
+                textPos = new Vector2(boxRect.X + (int)(boxRect.Width * .05) + camerapositionX, boxRect.Y + (int)(boxRect.Height * .15) + camerapositionY);
+                arrowRect[2].X = (int)textPos.X - (int)(boxRect.Width * .02);
+                spriteBatch.Draw(boxTexture, new Rectangle(boxRect.X + camerapositionX, boxRect.Y + camerapositionY, boxRect.Width, boxRect.Height), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, .95f);
+                //Arrow blinking
+                if (gameTime.TotalGameTime.Seconds % 2 == 0)
+                    spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[0], Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0.99f);
+                else
+                    spriteBatch.Draw(arrowTexture, arrowRect[2], arrowRect[1], Color.White, 0f, new Vector2(0,0), SpriteEffects.None, 0.99f);
+                //Choice text
+                for(int x = 0; x < confirm.Length; x++)
+                {
+                    spriteBatch.DrawString(font, confirm[x], new Vector2(textPos.X, textPos.Y + (x * arrowRect[0].Height)), Color.White,0f,Vector2.Zero, 1, SpriteEffects.None,1f);
+                }
+                
+            }
         }
+
+        public int choiceChosen
+        {
+            get
+            {
+                if(enterPressed)
+                    return choice;
+                return -1;
+            }
+        }
+
     }
 }
