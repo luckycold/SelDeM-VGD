@@ -42,10 +42,10 @@ namespace SelDeM
             List<string> initdB = new List<string>();
             foreach(string line in dialogue)
             {
-                initdB.Add(line);
+                initdB.Add(line); //initial DialogBox is the parent
                 if (line.Contains("*+"))
                 {
-                    numOfChoices = Convert.ToInt32(line.Substring(3));
+                    numOfChoices = Convert.ToInt32(line.Substring(3)); 
                     break;
                 }
             }
