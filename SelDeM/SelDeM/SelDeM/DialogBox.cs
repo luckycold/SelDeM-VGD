@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace SelDeM
 {
-    class DialogBox
+    public class DialogBox
     {
         private Rectangle dialogBoxRect;
         SpriteBatch spriteBatch;

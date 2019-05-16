@@ -12,7 +12,7 @@ using System.IO;
 
 namespace SelDeM
 {
-    class DialogueChoices
+    public class DialogueChoices
     {
         String[] confirm;
         bool enterPressed;

@@ -18,6 +18,7 @@ namespace SelDeM
         enum TileFlags { plain, unwalkable, dialog }
         TileFlags flag;
         int ForcefieldOffset = 0;
+        DialogTree<DialogBox> tree;
 
         public Tile(Rectangle r, String tileType)
         {
@@ -28,6 +29,13 @@ namespace SelDeM
         {
             rect = r;
             flag = TileFlags.plain;
+        }
+
+        public Tile(Rectangle r, String tileType, DialogTree<DialogBox> t)
+        {
+            rect = r;
+            setTile(tileType);
+            tree = t;
         }
 
         public int TileForcefield
@@ -86,7 +94,9 @@ namespace SelDeM
                 case TileFlags.dialog:
                     {
                         if (rect.Intersects(player.Rectangle) && player.PlayerKeyboard.IsKeyDown(Keys.Space) && !player.OldPlayerKeyboard.IsKeyDown(Keys.Space))
-                            Game1.curLevel.startDialog();
+                        {
+                            Game1.curLevel.startDialog(tree);
+                        }
                         break;
                     }
             }
