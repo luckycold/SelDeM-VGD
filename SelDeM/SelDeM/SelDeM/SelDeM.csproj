@@ -70,6 +70,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="StartScreen.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="TreeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
