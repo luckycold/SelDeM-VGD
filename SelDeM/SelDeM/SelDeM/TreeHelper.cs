@@ -54,8 +54,6 @@ namespace SelDeM
                     else
                     {
                         choiceMaker = null;
-                        curTreeLoc = dT;
-                        choiceMaker = new DialogueChoices(sb, content, curTreeLoc.Value.Choices, Game1.graphics);
                         isDialogVisable = false;
                         isChoiceVisable = false;
                         player.CanWalk = true;
