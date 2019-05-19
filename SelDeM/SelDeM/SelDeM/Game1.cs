@@ -82,6 +82,7 @@ namespace SelDeM
             DialogTree<DialogBox> dT1NPC1 = new DialogTree<DialogBox>(new DialogBox(spriteBatch, Content, graphics, "Oh? Well what do we have here...", new List<string> { "..." })); //Used when the running shoes have not been acquired
             dT1NPC1.AddChild(new DialogBox(spriteBatch, Content, graphics, "Not much of a talker are you. Well, no worries, you mind helping me for a sec?", new List<string> { "Nod head.", "Back down from helping this friendly stranger." }));
             dT1NPC1[0].AddChild(new DialogBox(spriteBatch, Content, graphics, "You see that item all the way yonder there? I would greatly appreciate if you could get it for me. My legs aren't as useful as they used to be.", new List<string> { }));
+            //curLevel.setTile(0, 0, new Tile(new Rectangle(0 * 64, 0 * 64, 64, 64), "dialog", dT1NPC1));
 
             DialogTree<DialogBox> dT2NPC1 = new DialogTree<DialogBox>(new DialogBox(spriteBatch, Content, graphics, "Wow, that was pretty quick. Did you manage to get me that item?", new List<string> { "Hand over item.", "Keep this item." })); //Used when the running shoes have been acquired
             dT2NPC1.AddChild(new DialogBox(spriteBatch, Content, graphics, "Hmmmmmmm...", new List<string> { "Stare as the stranger deeply examines the item." }));
@@ -93,7 +94,43 @@ namespace SelDeM
             dT2NPC1[0][0][1].AddChild(new DialogBox(spriteBatch, Content, graphics, "Alright, thanks for help. See ya around I guess.", new List<string> {  }));
             dT2NPC1[0][0][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "Hahahaha! This is might first time being sorry for someone. Well, the names Chris Burkingham. You... I'll call you Bud. How about it?", new List<string> { "Accept"}));
             dT2NPC1[0][0][0][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "Alright Bud, I think it's about time that I go. See ya around!", new List<string> {  }));
-            curLevel.setTile(0, 0, new Tile(new Rectangle(0 * 64, 0 * 64, 64, 64), "dialog", dT2NPC1));
+            //curLevel.setTile(0, 0, new Tile(new Rectangle(0 * 64, 0 * 64, 64, 64), "dialog", dT2NPC1));
+
+            DialogTree<DialogBox> dT1NPC2 = new DialogTree<DialogBox>(new DialogBox(spriteBatch, Content, graphics, "Sigh...", new List<string> { "Look at the depressed student." }));
+            dT1NPC2.AddChild(new DialogBox(spriteBatch, Content, graphics, "Hm? What are you looking at?", new List<string> { "..." }));
+            dT1NPC2[0].AddChild(new DialogBox(spriteBatch, Content, graphics, "Are you mocking me?!?!?", new List<string> { "Shake head." }));
+            dT1NPC2[0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "What's your freaking name!", new List<string> { "Point to mouth and throat" }));
+            dT1NPC2[0][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "You can't talk? Man, my luck is the best isn't it. Just leave me alone.", new List<string> { "Pat his head.", "Stare.", "Leave" }));
+            dT1NPC2[0][0][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "DO YOU WANT ME TO KILL YOU?!?!?! If you're not leaving, then I'm leaving!!!", new List<string> {  }));
+            dT1NPC2[0][0][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "...", new List<string> { "Stare intensely.", "Look at the student worriedly" }));
+            dT1NPC2[0][0][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "", new List<string> { }));
+            dT1NPC2[0][0][0][0][1].AddChild(new DialogBox(spriteBatch, Content, graphics, "GET AWAY FROM ME!!!", new List<string> {  }));
+            dT1NPC2[0][0][0][0][1].AddChild(new DialogBox(spriteBatch, Content, graphics, "Sigh. Look, I'm fine, I just lost my keys, that's all. Mind leaving me alone?", new List<string> { "Try to get more information about the keys by showing him your keys.", "Leave respectfully." }));
+            dT1NPC2[0][0][0][0][1][1].AddChild(new DialogBox(spriteBatch, Content, graphics, "Those are your keys right? Mine is both silver and smaller.", new List<string> { }));
+            dT1NPC2[0][0][0][0][1][1].AddChild(new DialogBox(spriteBatch, Content, graphics, "", new List<string> { }));
+            //curLevel.setTile(0, 0, new Tile(new Rectangle(0 * 64, 0 * 64, 64, 64), "dialog", dT1NPC2));
+
+            DialogTree<DialogBox> dT2NPC2 = new DialogTree<DialogBox>(new DialogBox(spriteBatch, Content, graphics, "What do you want?", new List<string> { "Hand over his keys.", "Leave." }));
+            dT2NPC2.AddChild(new DialogBox(spriteBatch, Content, graphics, "You found my keys? Heck yeah! Now I can get outta here! Thanks bro, you're the best! Want me to give you a ride?", new List<string> { "Shake head." }));
+            dT2NPC2.AddChild(new DialogBox(spriteBatch, Content, graphics, "", new List<string> { }));
+            dT2NPC2[0].AddChild(new DialogBox(spriteBatch, Content, graphics, "No, huh. Well, I'm gonna get goin' then. Cya.", new List<string> { }));
+            //curLevel.setTile(0, 0, new Tile(new Rectangle(0 * 64, 0 * 64, 64, 64), "dialog", dT2NPC2));
+
+            DialogTree<DialogBox> dT1NPC3 = new DialogTree<DialogBox>(new DialogBox(spriteBatch, Content, graphics, "HAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA!!!", new List<string> { "Look at the person on the roof with you.", "Leave." }));
+            dT1NPC3.AddChild(new DialogBox(spriteBatch, Content, graphics, "Look here world! I can fly!!!", new List<string> {"Run up to the person and grab them.", "Watch silently" }));
+            dT1NPC3.AddChild(new DialogBox(spriteBatch, Content, graphics, "", new List<string> { }));
+            dT1NPC3[0].AddChild(new DialogBox(spriteBatch, Content, graphics, "OHHH!?!?", new List<string> { "Throw them down on the ground."}));
+            dT1NPC3[0].AddChild(new DialogBox(spriteBatch, Content, graphics, "...", new List<string> { "Watch as he abruptly stops and just stares into the sky." }));
+            dT1NPC3[0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "Hey, what are you doing? That hurt!", new List<string> { "Intensely stare at the person with a strained look." }));
+            dT1NPC3[0][1].AddChild(new DialogBox(spriteBatch, Content, graphics, "You've been staring for some time. Do you think I'm crazy?", new List<string> { "No.", "Yes.", "Really crazy. Worthy enough to leave him be." }));
+            dT1NPC3[0][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "Hahaha, boy, you truly are innocent. Were you thinking I was jumping off the roof? Too bad! I was just reminiscing my childhood. You don't need to mind this old man.", new List<string> {  }));
+            dT1NPC3[0][1][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "Weird, wouldn't normally seeing a seemingly suicidal man spell out his doom be a strange occurrence?", new List<string> { "Yes.", "No."}));
+            dT1NPC3[0][1][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "Brutally honest aren't you... Hey, what do you think the point of life is? I'm growing older as the days pass and all I can see to do is reminisce about the past.", new List<string> { }));
+            dT1NPC3[0][1][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "", new List<string> { }));
+            dT1NPC3[0][1][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "Hm...so you are normal. Ok well, don't mind me, I'll still be kicking even after the world ends. HAHAHAHAHAHAHAHAHAHA!!!", new List<string> { }));
+            dT1NPC3[0][1][0][0].AddChild(new DialogBox(spriteBatch, Content, graphics, "I think I'll leave you to your own devices then.", new List<string> { }));
+            //curLevel.setTile(0, 0, new Tile(new Rectangle(0 * 64, 0 * 64, 64, 64), "dialog", dT1NPC3));
+
             s = new StartScreen(spriteBatch, this.Content, graphics);
 
 
