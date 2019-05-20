@@ -19,6 +19,9 @@ namespace SelDeM
         TileFlags flag;
         int ForcefieldOffset = 0;
         DialogTree<DialogBox> tree;
+        Texture2D texture;
+        SpriteBatch sb;
+        public static int count=0;
 
         public Tile(Rectangle r, String tileType)
         {
@@ -38,6 +41,15 @@ namespace SelDeM
             tree = t;
         }
 
+        public Tile(Rectangle r, String tileType, DialogTree<DialogBox> t, Texture2D text, SpriteBatch sb)
+        {
+            rect = r;
+            setTile(tileType);
+            tree = t;
+            texture = text;
+            this.sb = sb;
+        }
+
         public int TileForcefield
         {
             get { return ForcefieldOffset; }
@@ -54,6 +66,12 @@ namespace SelDeM
             {
                 this.rect = value;
             }
+        }
+
+        public void Draw()
+        {
+            if (texture != null)
+                sb.Draw(texture, rect, null, Color.White, 0f, new Vector2(0,0), SpriteEffects.None, .8f);
         }
 
         public Boolean checkFlagForPlayer(Player player)
@@ -96,6 +114,8 @@ namespace SelDeM
                         if (rect.Intersects(player.Rectangle) && player.PlayerKeyboard.IsKeyDown(Keys.Space) && !player.OldPlayerKeyboard.IsKeyDown(Keys.Space))
                         {
                             Game1.curLevel.startDialog(tree);
+                            setTile("plain");
+                            texture = null;
                         }
                         break;
                     }

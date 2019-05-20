@@ -61,6 +61,7 @@
     <Compile Include="CameraHandler.cs" />
     <Compile Include="DialogTree.cs" />
     <Compile Include="DialogueTreeBuilder.cs" />
+    <Compile Include="EndScreen.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="DialogBox.cs" />

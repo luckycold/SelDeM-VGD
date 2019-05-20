@@ -23,6 +23,7 @@ namespace SelDeM
         ContentManager content;
         public static DialogueTreeBuilder dTB;
         public static TreeHelper tree;
+        Song talking;
 
 
         public Level(SpriteBatch spriteBatch, Texture2D texture, int tileSize, Rectangle screenBounds, Player player, GraphicsDeviceManager graphics, ContentManager content)
@@ -43,6 +44,7 @@ namespace SelDeM
             this.player = player;
             scrnB = screenBounds;
             tree = null;
+            talking = content.Load<Song>("talking");
         }
 
         public Tile[,] Tiles
@@ -111,6 +113,7 @@ namespace SelDeM
         {
             tree = new TreeHelper(t, sb, content, Game1.graphics, player);
             tree.DialogVisable = true;
+            MediaPlayer.Play(talking);
         }
     }
 }

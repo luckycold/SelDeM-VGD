@@ -13,7 +13,7 @@ using System.IO;
 
 namespace SelDeM
 {
-    class StartScreen //Logo and controls
+    class EndScreen //Logo and controls
     {
         SpriteBatch spriteBatch;
         SpriteFont font;
@@ -24,7 +24,7 @@ namespace SelDeM
         GraphicsDeviceManager graphics;
         bool isShowing;
 
-        public StartScreen(SpriteBatch spriteBatch, ContentManager contentManager, GraphicsDeviceManager graphics)
+        public EndScreen(SpriteBatch spriteBatch, ContentManager contentManager, GraphicsDeviceManager graphics)
         {
             this.spriteBatch = spriteBatch;
             this.graphics = graphics;
@@ -32,26 +32,15 @@ namespace SelDeM
             controlTexture = contentManager.Load<Texture2D>("Seldem controls");
             logoTexture = contentManager.Load<Texture2D>("Seldem Logo");
 
-            controlPosition = new Rectangle(graphics.PreferredBackBufferWidth/2 - (600/2), graphics.PreferredBackBufferHeight/2, 600, 200);
-            logoPosition = new Rectangle(graphics.PreferredBackBufferWidth/2 - (816/2), 0, 816, 215);
+            controlPosition = new Rectangle(graphics.PreferredBackBufferWidth / 2 - (600 / 2), graphics.PreferredBackBufferHeight / 2, 600, 200);
+            logoPosition = new Rectangle(graphics.PreferredBackBufferWidth / 2 - (816 / 2), 0, 816, 215);
 
-            controlText = "WASD - Movement\nSPACE/ENTER - Interact and Confirm\nESCAPE - Close Game\nARROW KEYS(RIGHT/LEFT) - Progress Dialog\nARROW KEYS(UP/DOWN) - Highlight Choice\nTHIS IS A DEMO";
+            controlText = "DEMO IS FINISHED\nMusic: https://www.bensound.com";
 
             textPosition = new Vector2(controlPosition.Left, controlPosition.Bottom);
 
             font = contentManager.Load<SpriteFont>("StartScreenFont");
-            isShowing = true;
-        }
-
-        public void Update(GameTime gameTime, KeyboardState kb, KeyboardState oldkb)
-        {
-            if (isShowing)
-            {
-                if (kb.IsKeyDown(Keys.Enter)&& !oldkb.IsKeyDown(Keys.Enter))
-                {
-                    isShowing = false;
-                }
-            }
+            isShowing = false;
         }
 
         public bool Showing

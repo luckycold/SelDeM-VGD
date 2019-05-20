@@ -57,6 +57,8 @@ namespace SelDeM
                         isDialogVisable = false;
                         isChoiceVisable = false;
                         player.CanWalk = true;
+                        Tile.count++;
+                        MediaPlayer.Play(Game1.song1);
                     }
                 }
             }
