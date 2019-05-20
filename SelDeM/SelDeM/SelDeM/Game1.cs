@@ -27,6 +27,12 @@ namespace SelDeM
         MouseState oldms, ms;
         StartScreen s;
 
+        //Rectangle[] npc;
+        //Rectangle shoes, key;
+        //Texture2D[] npcT;
+        //Texture2D shoesT, keyT;
+
+
 
         public Game1()
         {
@@ -49,6 +55,15 @@ namespace SelDeM
             // TODO: Add your initialization logic here
             oldkb = Keyboard.GetState();
             oldms = Mouse.GetState();
+
+            //npcT = new Texture2D[3];
+            //npc = new Rectangle[3];
+            //npc[0] = new Rectangle(100, 50, 100, 100);
+            //npc[1] = new Rectangle(100, 200, 100, 100);
+            //npc[2] = new Rectangle(100, 350, 100, 100);
+            //shoes = new Rectangle(500, 200, 50, 50);
+            //key = new Rectangle(600, 200, 50, 50);
+
             IsMouseVisible = true;
             base.Initialize();
         }
@@ -62,6 +77,13 @@ namespace SelDeM
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
+
+            //npcT[0] = Content.Load<Texture2D>("Temporary/NPC#1");
+            //npcT[1] = Content.Load<Texture2D>("Temporary/NPC#2");
+            //npcT[2] = Content.Load<Texture2D>("Temporary/NPC#3");
+            //shoesT = Content.Load<Texture2D>("Temporary/shoes");
+            //keyT = Content.Load<Texture2D>("Temporary/key");
+
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
             camHand = new CameraHandler(GraphicsDevice, new Vector2(64, 32), 2, 1, player.Speed);
             curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
@@ -190,6 +212,7 @@ namespace SelDeM
                 player.Draw();
                 curLevel.Draw(gameTime);
             }
+
             spriteBatch.End();
 
             base.Draw(gameTime);
