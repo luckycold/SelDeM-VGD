@@ -88,7 +88,7 @@ namespace SelDeM
 
             player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
             camHand = new CameraHandler(GraphicsDevice, new Vector2(64, 32), 2, 1, player.Speed);
-            curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
+            curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start2"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
 
             //DialogTree<DialogBox> T = new DialogTree<DialogBox>(new DialogBox(spriteBatch, Content, graphics, "Hifdsafe!", new List<string> { "Greet back" }));
             //T.AddChild(new DialogBox(spriteBatch, Content, graphics, "Hello.", new List<string> { "Let him introduce himself" }));
