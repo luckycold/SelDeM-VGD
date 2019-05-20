@@ -35,7 +35,7 @@ namespace SelDeM
             controlPosition = new Rectangle(graphics.PreferredBackBufferWidth/2 - (600/2), graphics.PreferredBackBufferHeight/2, 600, 200);
             logoPosition = new Rectangle(graphics.PreferredBackBufferWidth/2 - (816/2), 0, 816, 215);
 
-            controlText = "WASD - Movement\nSPACE/ENTER - Interact\nESCAPE - Pause Menu\nBACKSPACE/~ - Text Log\nI - Inventory";
+            controlText = "WASD - Movement\nSPACE/ENTER - Interact and Confirm\nESCAPE - Close Game\nARROW KEYS(RIGHT/LEFT) - Progress Dialog\nARROW KEYS(UP/DOWN) - Highlight Choice\nTHIS IS A DEMO";
 
             textPosition = new Vector2(controlPosition.Left, controlPosition.Bottom);
 
