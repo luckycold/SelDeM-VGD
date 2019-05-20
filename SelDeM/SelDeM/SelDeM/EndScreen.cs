@@ -37,7 +37,7 @@ namespace SelDeM
 
             controlText = "DEMO IS FINISHED\nMusic: https://www.bensound.com";
 
-            textPosition = new Vector2(controlPosition.Left, controlPosition.Bottom);
+            textPosition = new Vector2(graphics.PreferredBackBufferWidth/2-150 ,graphics.PreferredBackBufferHeight/2);
 
             font = contentManager.Load<SpriteFont>("StartScreenFont");
             isShowing = false;
@@ -51,8 +51,6 @@ namespace SelDeM
 
         public void Draw()
         {
-            spriteBatch.Draw(controlTexture, controlPosition, Color.White);
-            spriteBatch.Draw(logoTexture, logoPosition, Color.White);
             spriteBatch.DrawString(font, controlText, textPosition, Color.Black);
         }
     }
