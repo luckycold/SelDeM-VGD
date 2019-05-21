@@ -106,6 +106,7 @@ namespace SelDeM
             DialogTree<DialogBox> dT1NPC1 = new DialogTree<DialogBox>(new DialogBox(spriteBatch, Content, graphics, "Oh? Well what do we have here...", new List<string> { "..." })); //Used when the running shoes have not been acquired
             dT1NPC1.AddChild(new DialogBox(spriteBatch, Content, graphics, "Not much of a talker are you. Well, no worries, you mind helping me for a sec?", new List<string> { "Nod head.", "Back down from helping this friendly stranger." }));
             dT1NPC1[0].AddChild(new DialogBox(spriteBatch, Content, graphics, "You see that item all the way yonder there? I would greatly appreciate if you could get it for me. My legs aren't as useful as they used to be.", new List<string> { }));
+            dT1NPC1[0].AddChild(new DialogBox(spriteBatch, Content, graphics, "...Okay?", new List<string> { }));
             curLevel.setTile(0, 0, new Tile(npc[0], "dialog", dT1NPC1, npcT[0], spriteBatch));
 
             //DialogTree<DialogBox> dT2NPC1 = new DialogTree<DialogBox>(new DialogBox(spriteBatch, Content, graphics, "Wow, that was pretty quick. Did you manage to get me that item?", new List<string> { "Hand over item.", "Keep this item." })); //Used when the running shoes have been acquired
