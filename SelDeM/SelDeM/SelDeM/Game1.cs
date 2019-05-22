@@ -86,7 +86,7 @@ namespace SelDeM
             //shoesT = Content.Load<Texture2D>("Temporary/shoes");
             //keyT = Content.Load<Texture2D>("Temporary/key");
 
-            player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 3f);
+            player = new Player(spriteBatch, this.Content.Load<Texture2D>("Hero"),new Rectangle(64,64,spriteSize,spriteSize), 10f);
             camHand = new CameraHandler(GraphicsDevice, new Vector2(64, 32), 2, 1, player.Speed);
             curLevel = new Level(spriteBatch, this.Content.Load<Texture2D>("start2"), spriteSize, GraphicsDevice.Viewport.Bounds, player, graphics, this.Content);
 
