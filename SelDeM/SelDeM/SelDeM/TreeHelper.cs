@@ -66,6 +66,7 @@ namespace SelDeM
             {
                 if (nextframe)
                 {
+                    player.CanWalk = false;
                     choiceMaker.Update(kb, oldkb);
                     if (choiceMaker.choiceChosen != -1)
                     {
